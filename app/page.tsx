@@ -1,58 +1,104 @@
-import { DeployButton } from "@/components/deploy-button";
-import { EnvVarWarning } from "@/components/env-var-warning";
-import { AuthButton } from "@/components/auth-button";
-import { Hero } from "@/components/hero";
-import { ThemeSwitcher } from "@/components/theme-switcher";
-import { ConnectSupabaseSteps } from "@/components/tutorial/connect-supabase-steps";
-import { SignUpUserSteps } from "@/components/tutorial/sign-up-user-steps";
-import { hasEnvVars } from "@/lib/utils";
 import Link from "next/link";
-import { Suspense } from "react";
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex flex-col items-center">
-      <div className="flex-1 w-full flex flex-col gap-20 items-center">
-        <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-          <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
-            <div className="flex gap-5 items-center font-semibold">
-              <Link href={"/"}>Next.js Supabase Starter</Link>
-              <div className="flex items-center gap-2">
-                <DeployButton />
-              </div>
+    <main className="min-h-screen bg-gradient-to-br from-violet-950 via-indigo-950 to-slate-950 text-white relative overflow-hidden">
+      {/* Decorative glow */}
+      <div
+        aria-hidden
+        className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-violet-500/20 blur-[120px]"
+      />
+      <div
+        aria-hidden
+        className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full bg-indigo-500/20 blur-[120px]"
+      />
+
+      <div className="relative z-10 flex flex-col min-h-screen">
+        {/* Nav */}
+        <nav className="px-5 py-4 sm:px-8 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-400 to-indigo-500 flex items-center justify-center text-white font-bold text-sm">
+              h
             </div>
-            {!hasEnvVars ? (
-              <EnvVarWarning />
-            ) : (
-              <Suspense>
-                <AuthButton />
-              </Suspense>
-            )}
+            <span className="font-semibold tracking-tight">hackloneliness</span>
           </div>
+          <Link
+            href="/auth/login"
+            className="text-sm text-white/60 hover:text-white transition-colors"
+          >
+            Sign in
+          </Link>
         </nav>
-        <div className="flex-1 flex flex-col gap-20 max-w-5xl p-5">
-          <Hero />
-          <main className="flex-1 flex flex-col gap-6 px-4">
-            <h2 className="font-medium text-xl mb-4">Next steps</h2>
-            {hasEnvVars ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
-          </main>
+
+        {/* Hero */}
+        <div className="flex-1 flex flex-col items-center justify-center px-5 pb-12 pt-8 sm:pt-16 text-center">
+          <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 mb-6">
+            <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
+            <span className="text-white/70 text-xs sm:text-sm">Meet Lyanna — your AI companion</span>
+          </div>
+
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight mb-5 max-w-3xl leading-[1.05]">
+            Loneliness isn&apos;t
+            <br />
+            <span className="bg-gradient-to-r from-violet-300 via-fuchsia-300 to-indigo-300 bg-clip-text text-transparent">
+              your story anymore.
+            </span>
+          </h1>
+
+          <p className="text-white/60 text-base sm:text-lg max-w-md sm:max-w-xl mb-8 leading-relaxed">
+            Real people. Real meetups. A companion that gets you.
+            Lyanna learns who you are, then helps you build the life you actually want.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-3 w-full max-w-sm sm:max-w-md sm:w-auto">
+            <Link
+              href="/auth/sign-up"
+              className="w-full sm:w-auto px-6 py-3.5 rounded-full bg-white text-slate-900 font-semibold hover:bg-white/90 transition-colors text-center"
+            >
+              Get started — it&apos;s free
+            </Link>
+            <Link
+              href="/auth/login"
+              className="w-full sm:w-auto px-6 py-3.5 rounded-full bg-white/10 border border-white/15 font-semibold hover:bg-white/15 transition-colors text-center"
+            >
+              I have an account
+            </Link>
+          </div>
+
+          {/* Feature cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-14 w-full max-w-4xl">
+            <FeatureCard
+              icon="🎯"
+              title="Real meetups, nearby"
+              body="Coffee, walks, study partners — find someone within 5km in the next 2 hours."
+            />
+            <FeatureCard
+              icon="🤝"
+              title="Verified & safe"
+              body="QR-handshake check-ins and peer reviews keep the community real."
+            />
+            <FeatureCard
+              icon="✨"
+              title="Lyanna, always with you"
+              body="Talk like a friend. Get motivated. Stay grounded in what matters to you."
+            />
+          </div>
         </div>
 
-        <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
-          <p>
-            Powered by{" "}
-            <a
-              href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-              target="_blank"
-              className="font-bold hover:underline"
-              rel="noreferrer"
-            >
-              Supabase
-            </a>
-          </p>
-          <ThemeSwitcher />
+        <footer className="px-5 py-6 text-center text-white/30 text-xs">
+          Built with care. You belong here.
         </footer>
       </div>
     </main>
+  );
+}
+
+function FeatureCard({ icon, title, body }: { icon: string; title: string; body: string }) {
+  return (
+    <div className="bg-white/5 border border-white/10 rounded-2xl p-5 text-left backdrop-blur-sm hover:bg-white/[0.07] transition-colors">
+      <div className="text-2xl mb-2">{icon}</div>
+      <h3 className="font-semibold text-sm mb-1.5">{title}</h3>
+      <p className="text-white/50 text-xs leading-relaxed">{body}</p>
+    </div>
   );
 }
