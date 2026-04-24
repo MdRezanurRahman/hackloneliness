@@ -32,24 +32,76 @@ export type GoalOption =
   | "dating"
   | "faith_community";
 
+// ─── Hinge-style deep onboarding types (Phase 1 expansion) ────────────
+
+export type ViceOption =
+  | "never"
+  | "sometimes"
+  | "regularly"
+  | "prefer_not";
+
+export type WeekendOption =
+  | "clubbing"
+  | "cafe_hopping"
+  | "gaming"
+  | "outdoor_adventures"
+  | "deep_conversations"
+  | "art_museums"
+  | "cozy_at_home";
+
+export type IntentOption =
+  | "new_city"
+  | "breakup"
+  | "gym_buddy"
+  | "just_chat";
+
+export type StressOption =
+  | "isolating"
+  | "friends"
+  | "exercise"
+  | "creative";
+
+export type BarrierOption =
+  | "social_anxiety"
+  | "busy"
+  | "dont_know_where"
+  | "language_barrier";
+
 export interface OnboardingFormData {
-  display_name: string;
+  // Section A — Basics
+  full_name: string;
   dob: string;                     // YYYY-MM-DD
   gender: GenderOption | "";
+  education: string;               // free text: "Master of Data Science at UTS"
+  occupation: string;              // free text: "Software engineer at Canva"
+
+  // Section B — The Vibe
   religion: FaithOption | "";
-  height_cm: number | null;
-  feelings: FeelingOption[];
-  goals: GoalOption[];
+  social_battery: number;          // 1–5 (1 = quiet, 5 = life of the party)
+  drinking: ViceOption | "";
+  smoking: ViceOption | "";
+  ideal_weekend: WeekendOption[];
+
+  // Section C — The Inner State
+  intent: IntentOption | "";
+  stress_handling: StressOption | "";
+  barrier: BarrierOption | "";
 }
 
 export const EMPTY_FORM: OnboardingFormData = {
-  display_name: "",
+  full_name: "",
   dob: "",
   gender: "",
+  education: "",
+  occupation: "",
   religion: "",
-  height_cm: null,
-  feelings: [],
-  goals: [],
+  social_battery: 3,
+  drinking: "",
+  smoking: "",
+  ideal_weekend: [],
+  intent: "",
+  stress_handling: "",
+  barrier: "",
 };
 
 export const FAITH_CHOICES: { value: FaithOption; label: string; icon: string }[] = [
@@ -94,6 +146,54 @@ export const GOAL_CHOICES: { value: GoalOption; label: string; icon: string }[] 
   { value: "faith_community", label: "Faith community", icon: "🕊️" },
   { value: "dating", label: "Dating", icon: "💫" },
 ];
+
+// ─── Hinge-style option lists ─────────────────────────────────────────
+
+export const VICE_CHOICES: { value: ViceOption; label: string }[] = [
+  { value: "never", label: "Never" },
+  { value: "sometimes", label: "Sometimes" },
+  { value: "regularly", label: "Regularly" },
+  { value: "prefer_not", label: "Prefer not to say" },
+];
+
+export const WEEKEND_CHOICES: { value: WeekendOption; label: string; icon: string }[] = [
+  { value: "clubbing", label: "Clubbing", icon: "🪩" },
+  { value: "cafe_hopping", label: "Café hopping", icon: "☕" },
+  { value: "gaming", label: "Gaming", icon: "🎮" },
+  { value: "outdoor_adventures", label: "Outdoor adventures", icon: "🏞️" },
+  { value: "deep_conversations", label: "Deep conversations", icon: "💬" },
+  { value: "art_museums", label: "Art & museums", icon: "🎨" },
+  { value: "cozy_at_home", label: "Cozy at home", icon: "🛋️" },
+];
+
+export const INTENT_CHOICES: { value: IntentOption; label: string; icon: string }[] = [
+  { value: "new_city",  label: "Feeling isolated in a new city", icon: "🧳" },
+  { value: "breakup",   label: "Going through a breakup",        icon: "💔" },
+  { value: "gym_buddy", label: "Need a gym / hobby buddy",       icon: "🏋️" },
+  { value: "just_chat", label: "Just bored and want to chat",    icon: "💭" },
+];
+
+export const STRESS_CHOICES: { value: StressOption; label: string; icon: string }[] = [
+  { value: "isolating", label: "Isolating myself",   icon: "🌙" },
+  { value: "friends",   label: "Talking to friends", icon: "🤝" },
+  { value: "exercise",  label: "Physical exercise",  icon: "🏃" },
+  { value: "creative",  label: "Creative hobbies",   icon: "🎨" },
+];
+
+export const BARRIER_CHOICES: { value: BarrierOption; label: string; icon: string }[] = [
+  { value: "social_anxiety",   label: "Social anxiety",               icon: "😟" },
+  { value: "busy",             label: "Too busy with work / studies", icon: "⏰" },
+  { value: "dont_know_where",  label: "Don't know where to go",       icon: "🗺️" },
+  { value: "language_barrier", label: "Language / cultural barriers", icon: "🌏" },
+];
+
+export const SOCIAL_BATTERY_LABEL = (value: number): string => {
+  if (value <= 1) return "Quiet · I recharge alone";
+  if (value === 2) return "Reserved · small groups";
+  if (value === 3) return "Balanced · some of both";
+  if (value === 4) return "Outgoing · love a crowd";
+  return "Life of the party";
+};
 
 export function calculateAge(dob: string): number | null {
   if (!dob) return null;

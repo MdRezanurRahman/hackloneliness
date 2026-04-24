@@ -1,11 +1,15 @@
 // Types for the social feature tables (posts, activities, chat, etc.)
 // Kept separate from database.ts so we can evolve them quickly.
 
+export type PostType = "text" | "image" | "video";
+
 export interface PostRow {
   id: string;
   created_at: string;
   user_id: string;
-  image_url: string;
+  post_type: PostType;
+  image_url: string | null;
+  video_url: string | null;
   caption: string | null;
   like_count: number;
   comment_count: number;
@@ -46,6 +50,30 @@ export interface ActivityWithHost extends ActivityRow {
     avatar_url: string | null;
     reputation_score: number;
   };
+}
+
+/** Row shape returned by the `nearby_activities` RPC. Flat columns — the RPC
+ *  denormalizes host fields so we get activity + host + distance in one call. */
+export interface NearbyActivityRow {
+  id: string;
+  title: string;
+  description: string | null;
+  category: string;
+  cover_image_url: string | null;
+  address_label: string | null;
+  city: string | null;
+  starts_at: string;
+  duration_mins: number;
+  max_attendees: number;
+  current_count: number;
+  status: "open" | "full" | "cancelled" | "completed";
+  latitude: number | null;
+  longitude: number | null;
+  host_id: string;
+  host_display_name: string;
+  host_avatar_url: string | null;
+  host_reputation_score: number;
+  distance_m: number;
 }
 
 export interface VerificationLogRow {

@@ -9,21 +9,37 @@ export function ProfileActions({ profileId, isMe }: { profileId: string; isMe: b
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
+  const signOut = async () => {
+    const confirmed = confirm("Sign out of hackloneliness?");
+    if (!confirmed) return;
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/auth/login");
+  };
+
   if (isMe) {
     return (
-      <div className="grid grid-cols-2 gap-2">
-        <Link
-          href="/profile/edit"
-          className="py-2.5 rounded-xl bg-white/10 border border-white/10 text-sm font-medium text-center hover:bg-white/15"
+      <div className="space-y-2">
+        <div className="grid grid-cols-2 gap-2">
+          <Link
+            href="/profile/edit"
+            className="py-2.5 rounded-xl bg-white/10 border border-white/10 text-sm font-medium text-center hover:bg-white/15"
+          >
+            Edit profile
+          </Link>
+          <Link
+            href="/echoes/new"
+            className="py-2.5 rounded-xl bg-gradient-to-r from-violet-500 to-indigo-500 text-sm font-semibold text-center"
+          >
+            New echo
+          </Link>
+        </div>
+        <button
+          onClick={signOut}
+          className="w-full py-2 text-xs text-white/40 hover:text-red-300 transition-colors"
         >
-          Edit profile
-        </Link>
-        <Link
-          href="/posts/new"
-          className="py-2.5 rounded-xl bg-gradient-to-r from-violet-500 to-indigo-500 text-sm font-semibold text-center"
-        >
-          New post
-        </Link>
+          Sign out
+        </button>
       </div>
     );
   }

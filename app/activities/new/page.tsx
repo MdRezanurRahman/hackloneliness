@@ -20,13 +20,36 @@ export default function NewActivityPage() {
   });
   const [durationMins, setDurationMins] = useState(60);
   const [maxAttendees, setMaxAttendees] = useState(4);
+  const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [geoBusy, setGeoBusy] = useState(false);
+  const [geoError, setGeoError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const canSave = title.trim().length >= 3 && startsAt;
+  const canSave = title.trim().length >= 3 && startsAt && coords !== null;
+
+  const captureLocation = () => {
+    if (typeof navigator === "undefined" || !navigator.geolocation) {
+      setGeoError("Your browser doesn't support geolocation.");
+      return;
+    }
+    setGeoBusy(true);
+    setGeoError(null);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        setGeoBusy(false);
+      },
+      (err) => {
+        setGeoError(err.message || "Couldn't get your location.");
+        setGeoBusy(false);
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 },
+    );
+  };
 
   const save = async () => {
-    if (!canSave) return;
+    if (!canSave || !coords) return;
     setSaving(true);
     setError(null);
     try {
@@ -45,6 +68,8 @@ export default function NewActivityPage() {
           category,
           city: city.trim() || null,
           address_label: addressLabel.trim() || null,
+          latitude: coords.lat,
+          longitude: coords.lng,
           starts_at: startsIso,
           duration_mins: durationMins,
           max_attendees: maxAttendees,
@@ -146,6 +171,37 @@ export default function NewActivityPage() {
             />
           </Field>
         </div>
+
+        <Field label="Your location (required)">
+          <button
+            type="button"
+            onClick={captureLocation}
+            disabled={geoBusy}
+            className={`w-full px-4 py-3.5 rounded-xl border text-left text-sm font-medium transition-colors ${
+              coords
+                ? "bg-gradient-to-br from-violet-500/20 to-indigo-500/20 border-violet-400/40 text-white"
+                : "bg-white/5 border-white/10 text-white/80 hover:bg-white/[0.07]"
+            } disabled:opacity-60`}
+          >
+            {geoBusy ? (
+              "📍 Getting your location…"
+            ) : coords ? (
+              <>
+                <span className="mr-2">✓</span>
+                Pinned at {coords.lat.toFixed(4)}, {coords.lng.toFixed(4)} · tap to update
+              </>
+            ) : (
+              "📍 Use my current location"
+            )}
+          </button>
+          <p className="text-xs text-white/40 mt-1.5">
+            Nearby people will see this meetup based on the pin. Only the precise pin
+            is stored; what they see is the meeting spot label below.
+          </p>
+          {geoError && (
+            <p className="text-xs text-red-300 mt-1.5">{geoError}</p>
+          )}
+        </Field>
 
         <Field label="Where (city)">
           <input

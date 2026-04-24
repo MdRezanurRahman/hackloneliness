@@ -13,7 +13,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
 
   const { data: profile } = await supabase
     .from("users")
-    .select("id, display_name, bio, avatar_url, reputation_score, safety_score, verified_id, ai_profile")
+    .select("id, display_name, full_name, bio, avatar_url, age, reputation_score, safety_score, verified_id, ai_profile")
     .eq("id", id)
     .maybeSingle();
 
@@ -21,7 +21,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
 
   const { data: posts } = await supabase
     .from("posts")
-    .select("id, image_url, like_count, comment_count")
+    .select("id, post_type, image_url, video_url, caption, like_count, comment_count")
     .eq("user_id", id)
     .order("created_at", { ascending: false });
 
@@ -48,7 +48,10 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
 
         <div className="mt-4">
           <div className="flex items-center gap-2">
-            <h2 className="font-semibold text-lg">{profile.display_name}</h2>
+            <h2 className="font-semibold text-lg">
+              {profile.full_name || profile.display_name}
+              {profile.age ? <span className="text-white/50 font-normal">, {profile.age}</span> : null}
+            </h2>
             {profile.verified_id && (
               <span className="text-xs bg-violet-500/20 text-violet-200 px-2 py-0.5 rounded-full">
                 Verified
@@ -56,15 +59,33 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
             )}
           </div>
           {profile.bio && <p className="text-white/70 text-sm mt-1 whitespace-pre-wrap">{profile.bio}</p>}
-          {profile.ai_profile?.goals?.length ? (
-            <div className="flex flex-wrap gap-1.5 mt-3">
-              {(profile.ai_profile.goals as string[]).slice(0, 5).map((g) => (
-                <span key={g} className="text-xs px-2 py-1 bg-white/5 border border-white/10 rounded-full text-white/70">
-                  {g.replace(/_/g, " ")}
-                </span>
-              ))}
-            </div>
-          ) : null}
+
+          {/* Education / occupation row */}
+          <div className="mt-3 space-y-1 text-sm text-white/70">
+            {profile.ai_profile?.education && (
+              <p>🎓 {profile.ai_profile.education as string}</p>
+            )}
+            {profile.ai_profile?.occupation && (
+              <p>💼 {profile.ai_profile.occupation as string}</p>
+            )}
+          </div>
+
+          {/* Weekend vibe chips (new) — falls back to legacy goals */}
+          {(() => {
+            const weekend = (profile.ai_profile?.ideal_weekend as string[] | undefined) ?? [];
+            const legacy  = (profile.ai_profile?.goals         as string[] | undefined) ?? [];
+            const tags    = weekend.length ? weekend : legacy;
+            if (!tags.length) return null;
+            return (
+              <div className="flex flex-wrap gap-1.5 mt-3">
+                {tags.slice(0, 5).map((t) => (
+                  <span key={t} className="text-xs px-2 py-1 bg-white/5 border border-white/10 rounded-full text-white/70 capitalize">
+                    {t.replace(/_/g, " ")}
+                  </span>
+                ))}
+              </div>
+            );
+          })()}
         </div>
 
         <div className="mt-5">
@@ -94,8 +115,33 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
                 href={`/home`}
                 className="relative aspect-square bg-black overflow-hidden"
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={post.image_url} alt="" className="w-full h-full object-cover" />
+                {post.post_type === "image" && post.image_url && (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img src={post.image_url} alt="" className="w-full h-full object-cover" />
+                )}
+                {post.post_type === "video" && post.video_url && (
+                  <>
+                    <video
+                      src={post.video_url}
+                      muted
+                      playsInline
+                      preload="metadata"
+                      className="w-full h-full object-cover"
+                    />
+                    <span className="absolute top-1.5 right-1.5 text-white drop-shadow">
+                      <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </span>
+                  </>
+                )}
+                {post.post_type === "text" && (
+                  <div className="w-full h-full bg-gradient-to-br from-violet-500/40 via-indigo-500/30 to-slate-900 p-2 flex items-center justify-center text-center">
+                    <p className="text-[11px] leading-snug text-white/90 line-clamp-6 break-words">
+                      {post.caption}
+                    </p>
+                  </div>
+                )}
               </Link>
             ))}
           </div>
