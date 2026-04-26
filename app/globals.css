@@ -83,4 +83,12 @@
   .animate-toast-in {
     animation: toast-in 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
+
+  @keyframes echo-modal-in {
+    0%   { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  .animate-echo-modal-in {
+    animation: echo-modal-in 200ms ease-out;
+  }
 }

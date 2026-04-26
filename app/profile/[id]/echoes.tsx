@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type { PostType } from "@/lib/types/social";
 
@@ -13,7 +13,6 @@ export interface EchoTile {
 }
 
 type Filter = "all" | PostType;
-type ViewMode = "list" | "grid";
 
 const FILTER_TABS: { value: Filter; label: string; icon: string }[] = [
   { value: "all",   label: "All",    icon: "✨" },
@@ -30,8 +29,8 @@ export function EchoesSection({
   isOwner: boolean;
 }) {
   const [filter, setFilter] = useState<Filter>("all");
-  // Default to "list" — user requested vertical column as the primary read-mode
-  const [view, setView] = useState<ViewMode>("list");
+  // null = no echo expanded; string = id of the echo currently expanded in the modal
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const counts = {
     all:   posts.length,
@@ -74,79 +73,64 @@ export function EchoesSection({
         )}
       </div>
 
-      {/* Filter chips + view toggle */}
+      {/* Filter chips */}
       {posts.length > 0 && (
-        <div className="relative flex items-center gap-2 mb-4">
-          <div className="flex gap-1.5 -mx-5 px-5 overflow-x-auto scrollbar-hide flex-1">
-            {FILTER_TABS.map((tab) => {
-              const count    = counts[tab.value];
-              const active   = filter === tab.value;
-              const disabled = count === 0 && tab.value !== "all";
-              return (
-                <button
-                  key={tab.value}
-                  type="button"
-                  onClick={() => !disabled && setFilter(tab.value)}
-                  disabled={disabled}
-                  className={`shrink-0 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all border ${
-                    active
-                      ? "bg-gradient-to-br from-violet-500 to-indigo-500 border-transparent text-white shadow-lg shadow-violet-500/30"
-                      : disabled
-                      ? "bg-slate-50 dark:bg-slate-900 border-slate-100 dark:border-slate-900 text-slate-900/20 dark:text-white/20 cursor-not-allowed"
-                      : "bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900/70 dark:text-white/70 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
-                  }`}
-                >
-                  <span className="mr-1">{tab.icon}</span>
-                  {tab.label}
-                  <span className={`ml-1.5 ${active ? "text-white/70" : "text-slate-900/30 dark:text-white/30"}`}>
-                    {count}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* View mode toggle */}
-          <div className="shrink-0 flex bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full p-0.5">
-            <ViewToggleButton
-              active={view === "list"}
-              onClick={() => setView("list")}
-              icon={<ListIcon />}
-              label="List view"
-            />
-            <ViewToggleButton
-              active={view === "grid"}
-              onClick={() => setView("grid")}
-              icon={<GridIcon />}
-              label="Grid view"
-            />
-          </div>
+        <div className="relative flex gap-1.5 mb-4 -mx-5 px-5 overflow-x-auto scrollbar-hide">
+          {FILTER_TABS.map((tab) => {
+            const count    = counts[tab.value];
+            const active   = filter === tab.value;
+            const disabled = count === 0 && tab.value !== "all";
+            return (
+              <button
+                key={tab.value}
+                type="button"
+                onClick={() => !disabled && setFilter(tab.value)}
+                disabled={disabled}
+                className={`shrink-0 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all border ${
+                  active
+                    ? "bg-gradient-to-br from-violet-500 to-indigo-500 border-transparent text-white shadow-lg shadow-violet-500/30"
+                    : disabled
+                    ? "bg-slate-50 dark:bg-slate-900 border-slate-100 dark:border-slate-900 text-slate-900/20 dark:text-white/20 cursor-not-allowed"
+                    : "bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900/70 dark:text-white/70 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
+                }`}
+              >
+                <span className="mr-1">{tab.icon}</span>
+                {tab.label}
+                <span className={`ml-1.5 ${active ? "text-white/70" : "text-slate-900/30 dark:text-white/30"}`}>
+                  {count}
+                </span>
+              </button>
+            );
+          })}
         </div>
       )}
 
-      {/* Body */}
+      {/* Grid (default — 3 per row) */}
       {posts.length === 0 ? (
         <EmptyState isOwner={isOwner} />
       ) : filtered.length === 0 ? (
         <p className="text-center py-10 text-sm text-slate-900/40 dark:text-white/40 italic">
           No {filter}s yet.
         </p>
-      ) : view === "grid" ? (
+      ) : (
         <div className="relative grid grid-cols-3 gap-1">
           {filtered.map((post) => (
-            <GridTile key={post.id} post={post} />
+            <GridTile
+              key={post.id}
+              post={post}
+              onClick={() => setSelectedId(post.id)}
+            />
           ))}
         </div>
-      ) : (
-        // ── LIST VIEW: full-width cards stacked vertically ──
-        // Click "Posted Echoes" tab → display all echoes in a single
-        // vertical column, easy to read, with proper spacing between
-        // each item. Scroll the page to see them all.
-        <div className="relative space-y-4">
-          {filtered.map((post) => (
-            <ListCard key={post.id} post={post} />
-          ))}
-        </div>
+      )}
+
+      {/* Modal: expanded echo + scrollable vertical stack */}
+      {selectedId && (
+        <EchoModal
+          echoes={filtered}
+          initialId={selectedId}
+          onClose={() => setSelectedId(null)}
+        />
       )}
 
       {/* Bottom inviting CTA for owner with content */}
@@ -164,119 +148,22 @@ export function EchoesSection({
 }
 
 // ─────────────────────────────────────────────────────────────────────
-// Sub-components
+// Grid tile — click triggers the modal, NOT navigation
 // ─────────────────────────────────────────────────────────────────────
 
-function ViewToggleButton({
-  active,
+function GridTile({
+  post,
   onClick,
-  icon,
-  label,
 }: {
-  active: boolean;
+  post: EchoTile;
   onClick: () => void;
-  icon: React.ReactNode;
-  label: string;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      aria-label={label}
-      aria-pressed={active}
-      className={`w-7 h-7 rounded-full flex items-center justify-center transition-all ${
-        active
-          ? "bg-gradient-to-br from-violet-500 to-indigo-500 text-white shadow shadow-violet-500/30"
-          : "text-slate-900/50 dark:text-white/50 hover:text-slate-900 dark:hover:text-white"
-      }`}
-    >
-      {icon}
-    </button>
-  );
-}
-
-function ListIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-3.5 h-3.5">
-      <path d="M4 6h16M4 12h16M4 18h16" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function GridIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-3.5 h-3.5">
-      <rect x="3"  y="3"  width="7" height="7" rx="1" />
-      <rect x="14" y="3"  width="7" height="7" rx="1" />
-      <rect x="3"  y="14" width="7" height="7" rx="1" />
-      <rect x="14" y="14" width="7" height="7" rx="1" />
-    </svg>
-  );
-}
-
-// ── List card: full-width, readable, scrollable column ──────────────
-
-function ListCard({ post }: { post: EchoTile }) {
-  return (
-    <article className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden">
-      {/* Body content */}
-      {post.post_type === "image" && post.image_url && (
-        <div className="relative bg-black aspect-square">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={post.image_url}
-            alt={post.caption ?? ""}
-            className="w-full h-full object-cover"
-          />
-        </div>
-      )}
-
-      {post.post_type === "video" && post.video_url && (
-        <div className="relative bg-black aspect-video">
-          <video
-            src={post.video_url}
-            controls
-            playsInline
-            preload="metadata"
-            className="w-full h-full object-contain"
-          />
-        </div>
-      )}
-
-      {post.post_type === "text" && (
-        <div className="px-5 py-7 bg-gradient-to-br from-violet-500/15 via-indigo-500/8 to-transparent">
-          <p className="text-[17px] leading-relaxed whitespace-pre-wrap break-words text-slate-900 dark:text-white">
-            {post.caption}
-          </p>
-        </div>
-      )}
-
-      {/* Caption below media (only for image/video) */}
-      {post.post_type !== "text" && post.caption && (
-        <div className="px-4 py-3">
-          <p className="text-sm leading-relaxed text-slate-900/85 dark:text-white/85 whitespace-pre-wrap break-words">
-            {post.caption}
-          </p>
-        </div>
-      )}
-
-      {/* Type label */}
-      <div className="px-4 pb-3 pt-1 flex items-center gap-2 text-[11px] uppercase tracking-wide text-slate-900/40 dark:text-white/40">
-        <span>
-          {post.post_type === "text" ? "📝 Thought" : post.post_type === "image" ? "📷 Photo" : "🎬 Clip"}
-        </span>
-      </div>
-    </article>
-  );
-}
-
-// ── Grid tile: existing 3-col Instagram-style ───────────────────────
-
-function GridTile({ post }: { post: EchoTile }) {
-  return (
-    <Link
-      href="/home"
-      className="relative aspect-square overflow-hidden rounded-lg group bg-black isolate"
+      aria-label="Open echo"
+      className="relative aspect-square overflow-hidden rounded-lg group bg-black isolate text-left active:scale-[0.98] transition-transform"
     >
       {post.post_type === "image" && post.image_url && (
         /* eslint-disable-next-line @next/next/no-img-element */
@@ -305,7 +192,7 @@ function GridTile({ post }: { post: EchoTile }) {
       )}
 
       {post.post_type === "text" && (
-        // Dark gradient tile in both themes — caption stays white.
+        // Permanently-dark gradient tile — caption stays white in both themes.
         <div className="w-full h-full bg-gradient-to-br from-violet-500/40 via-indigo-500/30 to-slate-900 p-2 flex items-center justify-center text-center transition-transform duration-300 group-hover:scale-[1.03]">
           <p className="text-[11px] leading-snug text-white/95 line-clamp-6 break-words">
             {post.caption}
@@ -318,11 +205,140 @@ function GridTile({ post }: { post: EchoTile }) {
         aria-hidden
         className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200"
       />
-    </Link>
+    </button>
   );
 }
 
-// ── Empty state ─────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────
+// Modal — selected echo prominent, scroll for the rest in a single column
+// ─────────────────────────────────────────────────────────────────────
+
+function EchoModal({
+  echoes,
+  initialId,
+  onClose,
+}: {
+  echoes: EchoTile[];
+  initialId: string;
+  onClose: () => void;
+}) {
+  const initialRef = useRef<HTMLDivElement>(null);
+
+  // Lock body scroll while open
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, []);
+
+  // Close on Escape
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  // Scroll the selected echo to the top of the modal on open
+  useEffect(() => {
+    initialRef.current?.scrollIntoView({ block: "start", behavior: "auto" });
+  }, []);
+
+  return (
+    // Outer overlay: tap anywhere outside a card to close
+    <div
+      className="fixed inset-0 z-50 overflow-y-auto bg-black/85 backdrop-blur-sm animate-echo-modal-in"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Echo viewer"
+    >
+      {/* Close button — sticky to the top-right of the viewport */}
+      <button
+        type="button"
+        onClick={onClose}
+        aria-label="Close"
+        className="fixed top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/15 backdrop-blur text-white text-xl leading-none flex items-center justify-center transition-colors"
+      >
+        ✕
+      </button>
+
+      {/* Vertical column of echoes — selected one renders first, rest follow */}
+      <div className="relative max-w-lg mx-auto px-4 py-12 space-y-6">
+        {echoes.map((echo) => (
+          <div
+            key={echo.id}
+            ref={echo.id === initialId ? initialRef : null}
+            onClick={(e) => e.stopPropagation()}
+            className="scroll-mt-12"
+          >
+            <ExpandedCard post={echo} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Single expanded echo card used inside the modal (full-width, readable).
+function ExpandedCard({ post }: { post: EchoTile }) {
+  return (
+    <article className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-2xl shadow-black/30">
+      {post.post_type === "image" && post.image_url && (
+        <div className="relative bg-black">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={post.image_url}
+            alt={post.caption ?? ""}
+            className="w-full h-auto max-h-[80vh] object-contain"
+          />
+        </div>
+      )}
+
+      {post.post_type === "video" && post.video_url && (
+        <div className="relative bg-black aspect-video">
+          <video
+            src={post.video_url}
+            controls
+            playsInline
+            preload="metadata"
+            className="w-full h-full object-contain"
+          />
+        </div>
+      )}
+
+      {post.post_type === "text" && (
+        <div className="px-6 py-10 bg-gradient-to-br from-violet-500/15 via-indigo-500/8 to-transparent">
+          <p className="text-[19px] leading-relaxed whitespace-pre-wrap break-words text-slate-900 dark:text-white">
+            {post.caption}
+          </p>
+        </div>
+      )}
+
+      {/* Caption + label for image/video; just label for text (caption is the body) */}
+      {post.post_type !== "text" && post.caption && (
+        <div className="px-5 py-4">
+          <p className="text-[15px] leading-relaxed text-slate-900/85 dark:text-white/85 whitespace-pre-wrap break-words">
+            {post.caption}
+          </p>
+        </div>
+      )}
+
+      <div className="px-5 pb-4 pt-1 flex items-center gap-2 text-[11px] uppercase tracking-wide text-slate-900/40 dark:text-white/40">
+        <span>
+          {post.post_type === "text" ? "📝 Thought" : post.post_type === "image" ? "📷 Photo" : "🎬 Clip"}
+        </span>
+      </div>
+    </article>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// Empty state
+// ─────────────────────────────────────────────────────────────────────
 
 function EmptyState({ isOwner }: { isOwner: boolean }) {
   return (
