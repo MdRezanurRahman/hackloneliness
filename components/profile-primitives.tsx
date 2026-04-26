@@ -6,7 +6,7 @@
  * behavior, and the DobPicker bug-fix stay in sync across surfaces.
  */
 
-import { useEffect, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 import {
   VICE_CHOICES,
   calculateAge,
@@ -23,7 +23,7 @@ export const INPUT_STYLE_LARGE =
 
 // ─── Chip grid (single or multi select) ──────────────────────────────
 
-export function ChipGrid<T extends string>({
+function ChipGridImpl<T extends string>({
   options,
   value,
   onChange,
@@ -36,13 +36,20 @@ export function ChipGrid<T extends string>({
   mode: "single" | "multi";
   columns?: 1 | 2;
 }) {
+  // Keep a ref to the latest onChange so memoization isn't broken by
+  // callers passing a fresh arrow-function each render.
+  const onChangeRef = useRef(onChange);
+  useEffect(() => {
+    onChangeRef.current = onChange;
+  });
+
   const toggle = (v: T) => {
     if (mode === "single") {
-      onChange([v]);
+      onChangeRef.current([v]);
       return;
     }
-    if (value.includes(v)) onChange(value.filter((x) => x !== v));
-    else onChange([...value, v]);
+    if (value.includes(v)) onChangeRef.current(value.filter((x) => x !== v));
+    else onChangeRef.current([...value, v]);
   };
 
   const gridCls = columns === 1 ? "grid-cols-1" : "grid-cols-2";
@@ -71,9 +78,21 @@ export function ChipGrid<T extends string>({
   );
 }
 
+// Memoize — re-render only when options/value/mode/columns change.
+// onChange changes are absorbed via the ref inside ChipGridImpl.
+export const ChipGrid = memo(ChipGridImpl, (prev, next) => {
+  return (
+    prev.options === next.options &&
+    prev.mode === next.mode &&
+    prev.columns === next.columns &&
+    prev.value.length === next.value.length &&
+    prev.value.every((v, i) => v === next.value[i])
+  );
+}) as typeof ChipGridImpl;
+
 // ─── Vice picker (drinking / smoking) ────────────────────────────────
 
-export function VicePicker({
+export const VicePicker = memo(function VicePicker({
   label,
   value,
   onChange,
@@ -82,6 +101,11 @@ export function VicePicker({
   value: ViceOption | "";
   onChange: (v: ViceOption) => void;
 }) {
+  const onChangeRef = useRef(onChange);
+  useEffect(() => {
+    onChangeRef.current = onChange;
+  });
+
   return (
     <div>
       <p className="text-white/70 text-sm font-medium mb-2">{label}</p>
@@ -92,7 +116,7 @@ export function VicePicker({
             <button
               key={c.value}
               type="button"
-              onClick={() => onChange(c.value)}
+              onClick={() => onChangeRef.current(c.value)}
               className={`px-3 py-2.5 rounded-xl border text-sm font-medium transition-all active:scale-[0.98] ${
                 active
                   ? "bg-gradient-to-br from-violet-500/30 to-indigo-500/30 border-violet-400 text-white"
@@ -106,11 +130,11 @@ export function VicePicker({
       </div>
     </div>
   );
-}
+}, (prev, next) => prev.label === next.label && prev.value === next.value);
 
 // ─── Social battery slider (1–5) ─────────────────────────────────────
 
-export function SocialBatterySlider({
+export const SocialBatterySlider = memo(function SocialBatterySlider({
   value,
   onChange,
   showLabel = true,
@@ -119,6 +143,11 @@ export function SocialBatterySlider({
   onChange: (v: number) => void;
   showLabel?: boolean;
 }) {
+  const onChangeRef = useRef(onChange);
+  useEffect(() => {
+    onChangeRef.current = onChange;
+  });
+
   const labelFor = (v: number) => {
     if (v <= 1) return "Quiet · I recharge alone";
     if (v === 2) return "Reserved · small groups";
@@ -136,7 +165,7 @@ export function SocialBatterySlider({
           max={5}
           step={1}
           value={value}
-          onChange={(e) => onChange(Number(e.target.value))}
+          onChange={(e) => onChangeRef.current(Number(e.target.value))}
           className="w-full accent-violet-400 h-2"
         />
         <div className="flex justify-between text-[10px] text-white/40 mt-1 px-1">
@@ -155,20 +184,30 @@ export function SocialBatterySlider({
       )}
     </div>
   );
-}
+}, (prev, next) => prev.value === next.value && prev.showLabel === next.showLabel);
 
 // ─── DOB picker (month / day / year dropdowns) ───────────────────────
 // Avoids the `<input type="date">` truncation bug. Keeps its own internal
 // y/m/d state so partial selections persist; emits ISO YYYY-MM-DD upstream
 // only when all three are filled.
 
-export function DobPicker({
+export const DobPicker = memo(function DobPicker({
   value,
   onChange,
 }: {
   value: string;
   onChange: (v: string) => void;
 }) {
+  // ── Critical: stabilize onChange via ref ──────────────────────────
+  // Without this, every parent re-render creates a new onChange arrow,
+  // which fires this component's useEffect, which calls onChange, which
+  // causes the parent to re-render, which creates a new onChange …
+  // → input lag / dropped keystrokes on pages with DobPicker always mounted.
+  const onChangeRef = useRef(onChange);
+  useEffect(() => {
+    onChangeRef.current = onChange;
+  });
+
   const initial = useMemo(() => {
     const parts = value ? value.split("-") : [];
     return {
@@ -196,16 +235,24 @@ export function DobPicker({
   const maxDay = daysInMonth(y, m);
   const days = Array.from({ length: maxDay }, (_, i) => i + 1);
 
+  // Track the last-emitted ISO to avoid emitting the same value repeatedly
+  const lastEmitted = useRef<string>("");
+
   useEffect(() => {
+    let next: string;
     if (!y || !m || !d) {
-      onChange("");
-      return;
+      next = "";
+    } else {
+      const maxD = daysInMonth(y, m);
+      const safeDay = Math.min(Number(d), maxD).toString().padStart(2, "0");
+      next = `${y}-${m.padStart(2, "0")}-${safeDay}`;
+      if (Number(d) > maxD) setD(String(maxD));
     }
-    const maxD = daysInMonth(y, m);
-    const safeDay = Math.min(Number(d), maxD).toString().padStart(2, "0");
-    onChange(`${y}-${m.padStart(2, "0")}-${safeDay}`);
-    if (Number(d) > maxD) setD(String(maxD));
-  }, [y, m, d, onChange]);
+    if (next !== lastEmitted.current) {
+      lastEmitted.current = next;
+      onChangeRef.current(next);
+    }
+  }, [y, m, d]);
 
   const selectClass =
     "w-full px-3 py-3.5 bg-white/5 border border-white/10 rounded-2xl text-white text-base focus:outline-none focus:border-violet-400/50 appearance-none";
@@ -250,4 +297,4 @@ export function DobPicker({
       )}
     </div>
   );
-}
+}, (prev, next) => prev.value === next.value);
