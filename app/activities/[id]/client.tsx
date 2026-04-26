@@ -631,39 +631,20 @@ function extractMessage(err: unknown): string {
   return "Something went wrong";
 }
 
-// Find or create the 1:1 conversation between two users (same logic
-// as in profile/[id]/actions.tsx — duplicated here to keep this self-contained)
+// Find or create the 1:1 conversation between two users.
+// Calls the server-side start_conversation RPC (migration 007), which
+// runs as SECURITY DEFINER so the conversation + both participant rows
+// land atomically without the policy gymnastics that broke the manual
+// two-step version.
 async function ensureConversation(
   supabase: ReturnType<typeof createClient>,
-  meId: string,
+  _meId: string,    // kept for call-site signature compatibility
   otherId: string,
 ): Promise<string> {
-  const { data: mine } = await supabase
-    .from("conversation_participants")
-    .select("conversation_id")
-    .eq("user_id", meId);
-
-  const { data: theirs } = await supabase
-    .from("conversation_participants")
-    .select("conversation_id")
-    .eq("user_id", otherId);
-
-  const mineIds = new Set((mine ?? []).map((r) => r.conversation_id));
-  const shared = (theirs ?? []).find((r) => mineIds.has(r.conversation_id));
-  if (shared) return shared.conversation_id;
-
-  const { data: newConvo, error: cErr } = await supabase
-    .from("conversations")
-    .insert({})
-    .select("id")
-    .single();
-  if (cErr) throw cErr;
-
-  const { error: pErr } = await supabase.from("conversation_participants").insert([
-    { conversation_id: newConvo.id, user_id: meId },
-    { conversation_id: newConvo.id, user_id: otherId },
-  ]);
-  if (pErr) throw pErr;
-
-  return newConvo.id;
+  const { data, error } = await supabase.rpc("start_conversation", {
+    other_user_id: otherId,
+  });
+  if (error) throw error;
+  if (!data) throw new Error("No conversation id returned");
+  return data as string;
 }

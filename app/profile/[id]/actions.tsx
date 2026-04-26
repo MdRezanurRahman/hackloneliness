@@ -48,45 +48,19 @@ export function ProfileActions({ profileId, isMe }: { profileId: string; isMe: b
     setLoading(true);
     try {
       const supabase = createClient();
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("Not signed in");
-
-      // Find existing 1:1 conversation by checking participants overlap
-      const { data: mine } = await supabase
-        .from("conversation_participants")
-        .select("conversation_id")
-        .eq("user_id", user.id);
-
-      const { data: theirs } = await supabase
-        .from("conversation_participants")
-        .select("conversation_id")
-        .eq("user_id", profileId);
-
-      const mineIds = new Set((mine ?? []).map((r) => r.conversation_id));
-      const shared = (theirs ?? []).find((r) => mineIds.has(r.conversation_id));
-
-      let convoId: string | undefined = shared?.conversation_id;
-
-      if (!convoId) {
-        const { data: newConvo, error: cErr } = await supabase
-          .from("conversations")
-          .insert({})
-          .select("id")
-          .single();
-        if (cErr) throw cErr;
-        convoId = newConvo.id;
-
-        const { error: pErr } = await supabase.from("conversation_participants").insert([
-          { conversation_id: convoId, user_id: user.id },
-          { conversation_id: convoId, user_id: profileId },
-        ]);
-        if (pErr) throw pErr;
-      }
-
-      router.push(`/messages/${convoId}`);
+      const { data, error } = await supabase.rpc("start_conversation", {
+        other_user_id: profileId,
+      });
+      if (error) throw error;
+      if (!data) throw new Error("No conversation id returned");
+      router.push(`/messages/${data}`);
     } catch (err) {
       console.error(err);
-      alert(err instanceof Error ? err.message : "Could not open chat");
+      const msg =
+        err && typeof err === "object" && "message" in err
+          ? String((err as { message: unknown }).message)
+          : "Could not open chat";
+      alert(msg);
       setLoading(false);
     }
   };
