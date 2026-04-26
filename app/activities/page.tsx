@@ -21,8 +21,8 @@ export default async function ActivitiesPage() {
   const activities = (raw ?? []) as unknown as ActivityWithHost[];
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-violet-950 via-indigo-950 to-slate-950 text-white pb-24">
-      <header className="sticky top-0 z-20 px-5 py-4 border-b border-white/5 bg-slate-950/70 backdrop-blur-md flex items-center justify-between">
+    <main className="min-h-screen bg-white text-slate-900 pb-24">
+      <header className="sticky top-0 z-20 px-5 py-4 border-b border-slate-100 bg-white/90 backdrop-blur-md flex items-center justify-between">
         <h1 className="font-semibold text-lg">Activities</h1>
         <Link
           href="/activities/new"
@@ -37,7 +37,7 @@ export default async function ActivitiesPage() {
           <div className="text-center py-16">
             <div className="text-4xl mb-3">✨</div>
             <p className="font-medium mb-1">Nothing nearby yet</p>
-            <p className="text-white/50 text-sm mb-5">Be the first to host something.</p>
+            <p className="text-slate-900/50 text-sm mb-5">Be the first to host something.</p>
             <Link
               href="/activities/new"
               className="inline-block px-5 py-2.5 rounded-xl bg-gradient-to-r from-violet-500 to-indigo-500 font-semibold"
@@ -71,20 +71,20 @@ function ActivityRow({ activity }: { activity: ActivityWithHost }) {
   return (
     <Link
       href={`/activities/${activity.id}`}
-      className="flex items-center gap-4 bg-white/5 border border-white/10 rounded-2xl p-4 hover:bg-white/[0.07] transition-colors"
+      className="flex items-center gap-4 bg-slate-50 border border-slate-200 rounded-2xl p-4 hover:bg-slate-100 transition-colors"
     >
       <div className="shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500/30 to-indigo-500/30 border border-violet-400/30 flex items-center justify-center text-2xl">
         {cat?.icon ?? "✨"}
       </div>
       <div className="flex-1 min-w-0">
         <h3 className="font-semibold truncate">{activity.title}</h3>
-        <p className="text-white/50 text-xs">{when} · {activity.city ?? "Nearby"}</p>
-        <p className="text-violet-300/80 text-xs mt-0.5">
+        <p className="text-slate-900/50 text-xs">{when} · {activity.city ?? "Nearby"}</p>
+        <p className="text-violet-600/80 text-xs mt-0.5">
           {activity.current_count}/{activity.max_attendees} joined ·
           hosted by {activity.host?.display_name ?? "someone"}
         </p>
       </div>
-      <span className="text-white/30">→</span>
+      <span className="text-slate-900/30">→</span>
     </Link>
   );
 }

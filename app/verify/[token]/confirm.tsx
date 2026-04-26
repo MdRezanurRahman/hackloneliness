@@ -52,7 +52,7 @@ export function ConfirmVerification({
       <>
         <div className="text-5xl mb-4">🎉</div>
         <h1 className="text-2xl font-semibold mb-2">You&apos;re checked in</h1>
-        <p className="text-white/60 text-sm">Have fun — this counts toward your reputation.</p>
+        <p className="text-slate-900/60 text-sm">Have fun — this counts toward your reputation.</p>
       </>
     );
   }
@@ -61,7 +61,7 @@ export function ConfirmVerification({
     <>
       <div className="text-5xl mb-4">👋</div>
       <h1 className="text-2xl font-semibold mb-2">Confirm you&apos;re here</h1>
-      <p className="text-white/60 text-sm mb-6">
+      <p className="text-slate-900/60 text-sm mb-6">
         Tap below to check in to this meetup. The host will see you arrived.
       </p>
       <button
@@ -72,7 +72,7 @@ export function ConfirmVerification({
         {busy ? "Checking in…" : "I&rsquo;m here — check me in"}
       </button>
       {error && (
-        <p className="text-sm text-red-300 bg-red-500/10 border border-red-500/20 rounded-lg p-3 mt-3">
+        <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg p-3 mt-3">
           {error}
         </p>
       )}

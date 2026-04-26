@@ -28,8 +28,8 @@ export default async function MessagesPage() {
   );
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-violet-950 via-indigo-950 to-slate-950 text-white pb-24">
-      <header className="sticky top-0 z-20 px-5 py-4 border-b border-white/5 bg-slate-950/70 backdrop-blur-md">
+    <main className="min-h-screen bg-white text-slate-900 pb-24">
+      <header className="sticky top-0 z-20 px-5 py-4 border-b border-slate-100 bg-white/90 backdrop-blur-md">
         <h1 className="font-semibold text-lg">Messages</h1>
       </header>
 
@@ -38,7 +38,7 @@ export default async function MessagesPage() {
           <div className="text-center py-20 px-6">
             <div className="text-4xl mb-3">💬</div>
             <p className="font-medium">No messages yet</p>
-            <p className="text-white/50 text-sm mt-1">
+            <p className="text-slate-900/50 text-sm mt-1">
               Start a chat by tapping &ldquo;Message&rdquo; on someone&rsquo;s profile.
             </p>
           </div>
@@ -51,16 +51,16 @@ export default async function MessagesPage() {
                   <Link
                     href={`/messages/${c.conversation_id}`}
                     className={`flex items-center gap-3 px-5 py-4 transition-colors ${
-                      hasUnread ? "bg-violet-500/5 hover:bg-violet-500/10" : "hover:bg-white/5"
+                      hasUnread ? "bg-violet-500/5 hover:bg-violet-100" : "hover:bg-slate-100"
                     }`}
                   >
                     <Avatar name={c.other_display_name} url={c.other_avatar_url} hasUnread={hasUnread} />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-2">
-                        <p className={`truncate ${hasUnread ? "font-semibold text-white" : "font-medium text-white/90"}`}>
+                        <p className={`truncate ${hasUnread ? "font-semibold text-slate-900" : "font-medium text-slate-900/90"}`}>
                           {c.other_display_name}
                         </p>
-                        <p className="text-white/30 text-xs shrink-0">
+                        <p className="text-slate-900/30 text-xs shrink-0">
                           {timeAgo(c.last_message_at)}
                         </p>
                       </div>
@@ -68,8 +68,8 @@ export default async function MessagesPage() {
                         <p
                           className={`text-sm truncate ${
                             hasUnread
-                              ? "text-white font-semibold"
-                              : "text-white/40"
+                              ? "text-slate-900 font-semibold"
+                              : "text-slate-900/40"
                           }`}
                         >
                           {c.last_message_preview}

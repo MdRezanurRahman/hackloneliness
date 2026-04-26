@@ -84,7 +84,7 @@ export function NearbyActivities() {
           <h2 className="font-semibold text-lg">Happening near you</h2>
           <LocationLabel geo={geo} />
         </div>
-        <Link href="/activities" className="text-sm text-violet-300 hover:text-violet-200">
+        <Link href="/activities" className="text-sm text-violet-600 hover:text-violet-700">
           See all →
         </Link>
       </div>
@@ -92,7 +92,7 @@ export function NearbyActivities() {
       {geo.kind === "pending" || rows === null ? (
         <SkeletonRow />
       ) : error ? (
-        <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-4 text-sm text-red-300">
+        <div className="bg-red-50 border border-red-200 rounded-2xl p-4 text-sm text-red-600">
           Couldn&apos;t load nearby meetups: {error}
         </div>
       ) : rows.length === 0 ? (
@@ -111,13 +111,13 @@ export function NearbyActivities() {
 // ─────────────────────────────────────────────────────────────────────
 function LocationLabel({ geo }: { geo: GeoState }) {
   if (geo.kind === "pending") {
-    return <p className="text-white/40 text-xs mt-0.5">Finding your location…</p>;
+    return <p className="text-slate-900/40 text-xs mt-0.5">Finding your location…</p>;
   }
   if (geo.kind === "granted") {
-    return <p className="text-white/40 text-xs mt-0.5">Within 5 km of you</p>;
+    return <p className="text-slate-900/40 text-xs mt-0.5">Within 5 km of you</p>;
   }
   return (
-    <p className="text-white/40 text-xs mt-0.5">
+    <p className="text-slate-900/40 text-xs mt-0.5">
       Showing Sydney CBD · share location for nearby results
     </p>
   );
@@ -141,25 +141,25 @@ function NearbyCard({ activity }: { activity: NearbyActivityRow }) {
   return (
     <Link
       href={`/activities/${activity.id}`}
-      className="snap-start shrink-0 w-64 bg-white/5 border border-white/10 rounded-2xl p-4 hover:bg-white/[0.07] transition-colors"
+      className="snap-start shrink-0 w-64 bg-slate-50 border border-slate-200 rounded-2xl p-4 hover:bg-slate-100 transition-colors"
     >
       <div className="flex items-start justify-between mb-2">
         <span className="text-2xl">{cat?.icon ?? "✨"}</span>
-        <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-violet-500/20 text-violet-200">
+        <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-violet-500/20 text-violet-700">
           {formatDistance(activity.distance_m)}
         </span>
       </div>
-      <h3 className="font-semibold text-white line-clamp-2 leading-snug mb-1">
+      <h3 className="font-semibold text-slate-900 line-clamp-2 leading-snug mb-1">
         {activity.title}
       </h3>
-      <p className="text-white/50 text-xs mb-3">
+      <p className="text-slate-900/50 text-xs mb-3">
         {when} · {activity.address_label ?? activity.city ?? "Nearby"}
       </p>
       <div className="flex items-center justify-between text-xs">
-        <span className="text-white/60">
+        <span className="text-slate-900/60">
           {activity.current_count}/{activity.max_attendees} joined
         </span>
-        <span className="text-violet-300">by {activity.host_display_name}</span>
+        <span className="text-violet-600">by {activity.host_display_name}</span>
       </div>
     </Link>
   );
@@ -171,7 +171,7 @@ function SkeletonRow() {
       {[0, 1, 2].map((i) => (
         <div
           key={i}
-          className="shrink-0 w-64 h-[128px] bg-white/5 border border-white/10 rounded-2xl animate-pulse"
+          className="shrink-0 w-64 h-[128px] bg-slate-50 border border-slate-200 rounded-2xl animate-pulse"
         />
       ))}
     </div>
@@ -184,9 +184,9 @@ function EmptyCard({ geo }: { geo: GeoState }) {
       ? "No meetups within 5 km right now. Be the first to host."
       : "No meetups near Sydney CBD right now. Be the first to host.";
   return (
-    <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center">
+    <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 text-center">
       <p className="font-medium mb-1">Quiet around here 🦗</p>
-      <p className="text-white/50 text-sm mb-4">{msg}</p>
+      <p className="text-slate-900/50 text-sm mb-4">{msg}</p>
       <Link
         href="/activities/new"
         className="inline-block px-4 py-2 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-500 text-white text-sm font-semibold"

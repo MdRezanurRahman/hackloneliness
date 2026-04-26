@@ -109,7 +109,7 @@ export function BottomNav() {
     <>
       {toast && <NewMessageToast data={toast} onClose={() => setToast(null)} />}
 
-      <nav className="fixed bottom-0 inset-x-0 z-30 bg-slate-950/90 backdrop-blur-md border-t border-white/10 pb-[env(safe-area-inset-bottom)]">
+      <nav className="fixed bottom-0 inset-x-0 z-30 bg-white/90 backdrop-blur-md border-t border-slate-200 pb-[env(safe-area-inset-bottom)]">
         <div className="max-w-3xl mx-auto grid grid-cols-5 px-2 py-2">
           {ITEMS.map((item) => {
             const Icon = item.icon;
@@ -125,7 +125,7 @@ export function BottomNav() {
                   className="flex items-center justify-center"
                 >
                   <div className="w-12 h-12 rounded-full bg-gradient-to-br from-violet-400 to-indigo-500 shadow-lg shadow-violet-500/40 flex items-center justify-center active:scale-95 transition-transform">
-                    <Icon className="w-6 h-6 text-white" />
+                    <Icon className="w-6 h-6 text-slate-900" />
                   </div>
                 </Link>
               );
@@ -136,7 +136,7 @@ export function BottomNav() {
                 key={item.href}
                 href={item.href}
                 className={`relative flex flex-col items-center justify-center py-1.5 transition-colors ${
-                  active ? "text-white" : "text-white/40"
+                  active ? "text-slate-900" : "text-slate-900/40"
                 }`}
               >
                 <span className="relative">
@@ -174,16 +174,16 @@ function NewMessageToast({
     <Link
       href={`/messages/${data.conversationId}`}
       onClick={onClose}
-      className="fixed top-3 right-3 left-3 sm:left-auto sm:right-6 sm:top-6 z-50 max-w-sm bg-slate-900/95 backdrop-blur border border-violet-400/40 rounded-2xl p-3 shadow-2xl shadow-violet-500/30 flex items-center gap-3 animate-toast-in"
+      className="fixed top-3 right-3 left-3 sm:left-auto sm:right-6 sm:top-6 z-50 max-w-sm bg-white/95 backdrop-blur border border-violet-400/40 rounded-2xl p-3 shadow-2xl shadow-violet-500/30 flex items-center gap-3 animate-toast-in"
     >
       <div className="w-10 h-10 shrink-0 rounded-full bg-gradient-to-br from-violet-400 to-indigo-500 flex items-center justify-center text-white text-base">
         💬
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-xs text-violet-300 font-medium">New message</p>
-        <p className="text-sm truncate text-white/90">{data.text}</p>
+        <p className="text-xs text-violet-600 font-medium">New message</p>
+        <p className="text-sm truncate text-slate-900/90">{data.text}</p>
       </div>
-      <span className="text-white/30">→</span>
+      <span className="text-slate-900/30">→</span>
     </Link>
   );
 }

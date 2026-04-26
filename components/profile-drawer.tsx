@@ -47,7 +47,7 @@ export function ProfileDrawer() {
         onClick={() => setOpen(true)}
         aria-label="Open menu"
         aria-expanded={open}
-        className="p-2 -mr-2 text-white/70 hover:text-white transition-colors"
+        className="p-2 -mr-2 text-slate-900/70 hover:text-slate-900 transition-colors"
       >
         <MenuIcon />
       </button>
@@ -66,16 +66,16 @@ export function ProfileDrawer() {
         role="dialog"
         aria-label="Profile menu"
         aria-modal="true"
-        className={`fixed top-0 right-0 bottom-0 z-50 w-72 lg:w-1/3 lg:max-w-sm bg-slate-950 border-l border-white/10 shadow-2xl shadow-black/50 flex flex-col transition-transform duration-300 ease-out ${
+        className={`fixed top-0 right-0 bottom-0 z-50 w-72 lg:w-1/3 lg:max-w-sm bg-white border-l border-slate-200 shadow-2xl shadow-black/50 flex flex-col transition-transform duration-300 ease-out ${
           open ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div className="px-5 py-4 flex items-center justify-between border-b border-white/10">
-          <p className="font-semibold text-white">Menu</p>
+        <div className="px-5 py-4 flex items-center justify-between border-b border-slate-200">
+          <p className="font-semibold text-slate-900">Menu</p>
           <button
             onClick={() => setOpen(false)}
             aria-label="Close menu"
-            className="text-white/60 hover:text-white text-lg leading-none w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/5"
+            className="text-slate-900/60 hover:text-slate-900 text-lg leading-none w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100"
           >
             ✕
           </button>
@@ -87,11 +87,11 @@ export function ProfileDrawer() {
           <DrawerLink href="/activities/new" icon="📍" label="Host a meetup" onSelect={() => setOpen(false)} />
         </nav>
 
-        <div className="px-3 py-4 border-t border-white/10">
+        <div className="px-3 py-4 border-t border-slate-200">
           <button
             type="button"
             onClick={signOut}
-            className="w-full py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-300 font-medium hover:bg-red-500/15 transition-colors"
+            className="w-full py-3 rounded-xl bg-red-50 border border-red-200 text-red-600 font-medium hover:bg-red-100 transition-colors"
           >
             Sign out
           </button>
@@ -116,7 +116,7 @@ function DrawerLink({
     <Link
       href={href}
       onClick={onSelect}
-      className="flex items-center gap-3 px-3 py-3 rounded-xl text-white/80 hover:bg-white/5 hover:text-white transition-colors"
+      className="flex items-center gap-3 px-3 py-3 rounded-xl text-slate-900/80 hover:bg-slate-100 hover:text-slate-900 transition-colors"
     >
       <span className="text-lg">{icon}</span>
       <span className="text-sm font-medium">{label}</span>

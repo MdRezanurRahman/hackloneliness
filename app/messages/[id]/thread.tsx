@@ -127,7 +127,7 @@ export function ChatThread({
         style={{ overscrollBehavior: "contain" }}
       >
         {messages.length === 0 && (
-          <div className="text-center text-white/40 text-sm mt-10">
+          <div className="text-center text-slate-900/40 text-sm mt-10">
             Say hello 👋
           </div>
         )}
@@ -139,7 +139,7 @@ export function ChatThread({
                 className={`max-w-[80%] px-4 py-2.5 rounded-2xl text-[15px] leading-relaxed ${
                   mine
                     ? "bg-gradient-to-br from-violet-500 to-indigo-500 text-white rounded-tr-sm"
-                    : "bg-white/10 text-white rounded-tl-sm"
+                    : "bg-slate-100 text-slate-900 rounded-tl-sm"
                 }`}
               >
                 <span className="whitespace-pre-wrap break-words">{m.text}</span>
@@ -149,8 +149,8 @@ export function ChatThread({
         })}
       </div>
 
-      <div className="px-3 pb-4 pt-2 shrink-0 bg-slate-950/80 backdrop-blur-md border-t border-white/5">
-        <div className="bg-white/5 border border-white/10 rounded-2xl flex items-end gap-2 p-1.5 focus-within:border-violet-400/40 transition-colors">
+      <div className="px-3 pb-4 pt-2 shrink-0 bg-white/90 backdrop-blur-md border-t border-slate-100">
+        <div className="bg-slate-50 border border-slate-200 rounded-2xl flex items-end gap-2 p-1.5 focus-within:border-violet-400/40 transition-colors">
           <textarea
             ref={inputRef}
             value={input}
@@ -161,7 +161,7 @@ export function ChatThread({
             onKeyDown={onKey}
             placeholder="Message…"
             rows={1}
-            className="flex-1 bg-transparent text-white placeholder-white/30 text-[15px] resize-none outline-none leading-relaxed py-2 px-2.5 max-h-[120px] scrollbar-hide"
+            className="flex-1 bg-transparent text-slate-900 placeholder-slate-400 text-[15px] resize-none outline-none leading-relaxed py-2 px-2.5 max-h-[120px] scrollbar-hide"
             disabled={sending}
           />
           <button
@@ -170,7 +170,7 @@ export function ChatThread({
             className="shrink-0 w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-500 disabled:opacity-30 flex items-center justify-center"
             aria-label="Send"
           >
-            <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4 text-white" stroke="currentColor" strokeWidth={2.5}>
+            <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4 text-slate-900" stroke="currentColor" strokeWidth={2.5}>
               <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>

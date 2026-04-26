@@ -27,15 +27,15 @@ export default async function HomePage() {
   const posts = (postsRaw ?? []) as unknown as PostWithAuthor[];
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-violet-950 via-indigo-950 to-slate-950 text-white pb-24">
-      <header className="sticky top-0 z-20 px-5 py-4 border-b border-white/5 bg-slate-950/70 backdrop-blur-md flex items-center justify-between">
+    <main className="min-h-screen bg-white text-slate-900 pb-24">
+      <header className="sticky top-0 z-20 px-5 py-4 border-b border-slate-100 bg-white/90 backdrop-blur-md flex items-center justify-between">
         <div>
-          <p className="text-violet-300 text-xs">Welcome back</p>
+          <p className="text-violet-600 text-xs">Welcome back</p>
           <h1 className="text-xl font-semibold">Hey {profile.display_name} 👋</h1>
         </div>
         <Link
           href="/activities/new"
-          className="text-sm bg-white/10 border border-white/10 px-3 py-1.5 rounded-full hover:bg-white/15 transition-colors"
+          className="text-sm bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-full hover:bg-slate-200 transition-colors"
         >
           + Host
         </Link>
@@ -73,11 +73,11 @@ export default async function HomePage() {
 // ─────────────────────────────────────────────────────────────────────
 function EchoCard({ post }: { post: PostWithAuthor }) {
   return (
-    <article className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+    <article className="bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden">
       <Link href={`/profile/${post.author.id}`} className="flex items-center gap-2 p-3">
         <Avatar name={post.author.display_name} url={post.author.avatar_url} />
         <span className="text-sm font-medium">{post.author.display_name}</span>
-        <span className="ml-auto text-[10px] uppercase tracking-wide text-white/30">
+        <span className="ml-auto text-[10px] uppercase tracking-wide text-slate-900/30">
           {post.post_type === "text" ? "Thought" : post.post_type === "image" ? "Photo" : "Clip"}
         </span>
       </Link>
@@ -104,20 +104,20 @@ function EchoCard({ post }: { post: PostWithAuthor }) {
 
       {post.post_type === "text" && (
         <div className="px-5 py-6 bg-gradient-to-br from-violet-500/15 via-indigo-500/10 to-transparent">
-          <p className="text-[17px] leading-relaxed whitespace-pre-wrap break-words text-white/90">
+          <p className="text-[17px] leading-relaxed whitespace-pre-wrap break-words text-slate-900/90">
             {post.caption}
           </p>
         </div>
       )}
 
       <div className="p-3 space-y-1">
-        <p className="text-xs text-white/60">
+        <p className="text-xs text-slate-900/60">
           {post.like_count} likes · {post.comment_count} comments
         </p>
         {post.post_type !== "text" && post.caption && (
           <p className="text-sm">
             <span className="font-medium">{post.author.display_name}</span>{" "}
-            <span className="text-white/80">{post.caption}</span>
+            <span className="text-slate-900/80">{post.caption}</span>
           </p>
         )}
       </div>
@@ -140,9 +140,9 @@ function Avatar({ name, url, size = "sm" }: { name: string; url: string | null; 
 
 function EmptyCard({ title, body, cta }: { title: string; body: string; cta: { href: string; label: string } }) {
   return (
-    <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center">
-      <p className="font-medium text-white mb-1">{title}</p>
-      <p className="text-white/50 text-sm mb-4">{body}</p>
+    <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 text-center">
+      <p className="font-medium text-slate-900 mb-1">{title}</p>
+      <p className="text-slate-900/50 text-sm mb-4">{body}</p>
       <Link
         href={cta.href}
         className="inline-block px-4 py-2 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-500 text-white text-sm font-semibold"

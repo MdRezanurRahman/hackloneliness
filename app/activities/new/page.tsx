@@ -11,7 +11,7 @@ import { ACTIVITY_CATEGORIES } from "@/lib/types/social";
 const LocationPicker = dynamic(() => import("@/components/location-picker"), {
   ssr: false,
   loading: () => (
-    <div className="h-[320px] bg-white/5 rounded-2xl border border-white/10 animate-pulse flex items-center justify-center text-white/30 text-sm">
+    <div className="h-[320px] bg-slate-50 rounded-2xl border border-slate-200 animate-pulse flex items-center justify-center text-slate-900/30 text-sm">
       Loading map…
     </div>
   ),
@@ -86,14 +86,14 @@ export default function NewActivityPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-violet-950 via-indigo-950 to-slate-950 text-white">
-      <header className="px-5 py-4 flex items-center justify-between border-b border-white/5">
-        <Link href="/activities" className="text-white/60 text-sm">← Cancel</Link>
+    <main className="min-h-screen bg-white text-slate-900">
+      <header className="px-5 py-4 flex items-center justify-between border-b border-slate-100">
+        <Link href="/activities" className="text-slate-900/60 text-sm">← Cancel</Link>
         <h1 className="font-semibold">Host a meetup</h1>
         <button
           onClick={save}
           disabled={!canSave || saving}
-          className="text-sm font-semibold text-violet-300 disabled:opacity-30"
+          className="text-sm font-semibold text-violet-600 disabled:opacity-30"
         >
           {saving ? "Creating…" : "Create"}
         </button>
@@ -105,7 +105,7 @@ export default function NewActivityPage() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="e.g. Coffee at Blue Bottle"
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-violet-400/50 placeholder-white/30"
+            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-violet-400/50 placeholder-slate-400"
           />
         </Field>
 
@@ -119,7 +119,7 @@ export default function NewActivityPage() {
                 className={`py-3 rounded-xl border text-sm font-medium ${
                   category === c.value
                     ? "bg-gradient-to-br from-violet-500/30 to-indigo-500/30 border-violet-400 text-white"
-                    : "bg-white/5 border-white/10 text-white/70"
+                    : "bg-slate-50 border-slate-200 text-slate-900/70"
                 }`}
               >
                 <span className="mr-1.5">{c.icon}</span>
@@ -134,7 +134,7 @@ export default function NewActivityPage() {
             type="datetime-local"
             value={startsAt}
             onChange={(e) => setStartsAt(e.target.value)}
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-violet-400/50 [color-scheme:dark]"
+            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-violet-400/50 [color-scheme:light]"
           />
         </Field>
 
@@ -146,7 +146,7 @@ export default function NewActivityPage() {
               max={360}
               value={durationMins}
               onChange={(e) => setDurationMins(Number(e.target.value))}
-              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-violet-400/50"
+              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-violet-400/50"
             />
           </Field>
           <Field label="Max attendees">
@@ -156,7 +156,7 @@ export default function NewActivityPage() {
               max={50}
               value={maxAttendees}
               onChange={(e) => setMaxAttendees(Number(e.target.value))}
-              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-violet-400/50"
+              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-violet-400/50"
             />
           </Field>
         </div>
@@ -172,7 +172,7 @@ export default function NewActivityPage() {
               }
             }}
           />
-          <p className="text-xs text-white/40 mt-2">
+          <p className="text-xs text-slate-900/40 mt-2">
             Search for a venue or tap on the map. Drag the pin to fine-tune. The
             exact spot stays hidden from attendees until you reveal it.
           </p>
@@ -183,7 +183,7 @@ export default function NewActivityPage() {
             value={city}
             onChange={(e) => setCity(e.target.value)}
             placeholder="e.g. Melbourne"
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-violet-400/50 placeholder-white/30"
+            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-violet-400/50 placeholder-slate-400"
           />
         </Field>
 
@@ -192,7 +192,7 @@ export default function NewActivityPage() {
             value={addressLabel}
             onChange={(e) => setAddressLabel(e.target.value)}
             placeholder="e.g. Central Park south entrance"
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-violet-400/50 placeholder-white/30"
+            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-violet-400/50 placeholder-slate-400"
           />
         </Field>
 
@@ -202,12 +202,12 @@ export default function NewActivityPage() {
             onChange={(e) => setDescription(e.target.value)}
             rows={3}
             placeholder="Anything else people should know…"
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl resize-none focus:outline-none focus:border-violet-400/50 placeholder-white/30"
+            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl resize-none focus:outline-none focus:border-violet-400/50 placeholder-slate-400"
           />
         </Field>
 
         {error && (
-          <div className="text-sm text-red-300 bg-red-500/10 border border-red-500/20 rounded-lg p-3">
+          <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg p-3">
             {error}
           </div>
         )}
@@ -219,7 +219,7 @@ export default function NewActivityPage() {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs text-white/60 mb-1.5">{label}</label>
+      <label className="block text-xs text-slate-900/60 mb-1.5">{label}</label>
       {children}
     </div>
   );

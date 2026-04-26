@@ -55,7 +55,7 @@ export function EchoesSection({
               ✨ Echoes
             </span>
           </h2>
-          <p className="text-white/50 text-xs mt-0.5">
+          <p className="text-slate-900/50 text-xs mt-0.5">
             {posts.length === 0
               ? "No moments shared yet"
               : `${posts.length} shared moment${posts.length === 1 ? "" : "s"}`}
@@ -88,13 +88,13 @@ export function EchoesSection({
                   active
                     ? "bg-gradient-to-br from-violet-500 to-indigo-500 border-transparent text-white shadow-lg shadow-violet-500/30"
                     : disabled
-                    ? "bg-white/[0.02] border-white/5 text-white/20 cursor-not-allowed"
-                    : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10 hover:text-white"
+                    ? "bg-slate-50 border-slate-100 text-slate-900/20 cursor-not-allowed"
+                    : "bg-slate-50 border-slate-200 text-slate-900/70 hover:bg-slate-100 hover:text-slate-900"
                 }`}
               >
                 <span className="mr-1">{tab.icon}</span>
                 {tab.label}
-                <span className={`ml-1.5 ${active ? "text-white/70" : "text-white/30"}`}>
+                <span className={`ml-1.5 ${active ? "text-slate-900/70" : "text-slate-900/30"}`}>
                   {count}
                 </span>
               </button>
@@ -107,7 +107,7 @@ export function EchoesSection({
       {posts.length === 0 ? (
         <EmptyState isOwner={isOwner} />
       ) : filtered.length === 0 ? (
-        <p className="text-center py-10 text-sm text-white/40 italic">
+        <p className="text-center py-10 text-sm text-slate-900/40 italic">
           No {filter}s yet.
         </p>
       ) : (
@@ -125,7 +125,7 @@ export function EchoesSection({
           className="relative mt-6 flex items-center justify-center gap-2 py-3 rounded-2xl bg-gradient-to-br from-violet-500/15 to-indigo-500/10 border border-violet-400/25 hover:from-violet-500/25 hover:to-indigo-500/20 transition-colors"
         >
           <span className="text-lg">✨</span>
-          <span className="text-sm font-semibold text-violet-100">Share another echo</span>
+          <span className="text-sm font-semibold text-violet-700">Share another echo</span>
         </Link>
       )}
     </section>
@@ -140,10 +140,10 @@ function EmptyState({ isOwner }: { isOwner: boolean }) {
       <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-400 to-indigo-500 mb-3 shadow-lg shadow-violet-500/40">
         <span className="text-2xl">✨</span>
       </div>
-      <p className="font-semibold text-white mb-1.5">No echoes yet</p>
+      <p className="font-semibold text-slate-900 mb-1.5">No echoes yet</p>
       {isOwner ? (
         <>
-          <p className="text-sm text-white/50 mb-5 max-w-xs mx-auto">
+          <p className="text-sm text-slate-900/50 mb-5 max-w-xs mx-auto">
             Your first thought, photo, or clip — share what you&apos;re up to and let your people find you.
           </p>
           <Link
@@ -155,7 +155,7 @@ function EmptyState({ isOwner }: { isOwner: boolean }) {
           </Link>
         </>
       ) : (
-        <p className="text-sm text-white/50 max-w-xs mx-auto">
+        <p className="text-sm text-slate-900/50 max-w-xs mx-auto">
           When they share something, it&apos;ll show up here.
         </p>
       )}
@@ -187,7 +187,7 @@ function Tile({ post }: { post: EchoTile }) {
             preload="metadata"
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
-          <span className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-black/70 backdrop-blur flex items-center justify-center text-white">
+          <span className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-black/70 backdrop-blur flex items-center justify-center text-slate-900">
             <svg viewBox="0 0 24 24" className="w-3 h-3" fill="currentColor">
               <path d="M8 5v14l11-7z" />
             </svg>
@@ -197,7 +197,7 @@ function Tile({ post }: { post: EchoTile }) {
 
       {post.post_type === "text" && (
         <div className="w-full h-full bg-gradient-to-br from-violet-500/40 via-indigo-500/30 to-slate-900 p-2 flex items-center justify-center text-center transition-transform duration-300 group-hover:scale-[1.03]">
-          <p className="text-[11px] leading-snug text-white/95 line-clamp-6 break-words">
+          <p className="text-[11px] leading-snug text-slate-900/95 line-clamp-6 break-words">
             {post.caption}
           </p>
         </div>

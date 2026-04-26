@@ -36,11 +36,11 @@ export default function CompletePage() {
           </div>
         </div>
 
-        <p className="text-violet-300 text-sm font-medium mb-3">✨ Welcome to Lyanna</p>
-        <h1 className="text-white text-3xl sm:text-4xl font-semibold mb-4 leading-tight">
+        <p className="text-violet-600 text-sm font-medium mb-3">✨ Welcome to Lyanna</p>
+        <h1 className="text-slate-900 text-3xl sm:text-4xl font-semibold mb-4 leading-tight">
           Hey {name || "there"} — I&apos;m so glad you&apos;re here.
         </h1>
-        <p className="text-white/60 text-base sm:text-lg mb-10 leading-relaxed">
+        <p className="text-slate-900/60 text-base sm:text-lg mb-10 leading-relaxed">
           I&apos;ll be with you the whole way. Tap the floating button anytime — before a meetup, after a rough day, or when you just need a friend.
         </p>
 

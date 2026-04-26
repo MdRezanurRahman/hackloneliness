@@ -77,9 +77,9 @@ export default async function ActivityDetailPage({
   const start = new Date(a.starts_at);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-violet-950 via-indigo-950 to-slate-950 text-white pb-28">
-      <header className="px-5 py-4 flex items-center justify-between border-b border-white/5">
-        <Link href="/activities" className="text-white/60 text-sm">
+    <main className="min-h-screen bg-white text-slate-900 pb-28">
+      <header className="px-5 py-4 flex items-center justify-between border-b border-slate-100">
+        <Link href="/activities" className="text-slate-900/60 text-sm">
           ← Back
         </Link>
         <h1 className="font-semibold">Meetup</h1>
@@ -91,27 +91,27 @@ export default async function ActivityDetailPage({
         <div>
           <div className="text-4xl mb-3">{cat?.icon ?? "✨"}</div>
           <h2 className="text-2xl font-semibold">{a.title}</h2>
-          <p className="text-white/50 text-sm mt-1 capitalize">{a.category}</p>
+          <p className="text-slate-900/50 text-sm mt-1 capitalize">{a.category}</p>
         </div>
 
         {/* ── Host card (always visible — attendees can vet host) ── */}
         <Link
           href={`/profile/${a.host_id}`}
-          className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-2xl p-3 hover:bg-white/[0.07] transition-colors"
+          className="flex items-center gap-3 bg-slate-50 border border-slate-200 rounded-2xl p-3 hover:bg-slate-100 transition-colors"
         >
           <Avatar name={a.host?.display_name ?? "Host"} url={a.host?.avatar_url ?? null} size="md" />
           <div className="flex-1 min-w-0">
-            <p className="text-xs text-white/50">Hosted by</p>
+            <p className="text-xs text-slate-900/50">Hosted by</p>
             <p className="font-semibold truncate">{a.host?.display_name ?? "—"}</p>
-            <p className="text-xs text-violet-300/80">
+            <p className="text-xs text-violet-600/80">
               ⭐ {a.host?.reputation_score?.toFixed(1) ?? "5.0"} · tap to view profile
             </p>
           </div>
-          <span className="text-white/30">→</span>
+          <span className="text-slate-900/30">→</span>
         </Link>
 
         {/* ── What & when (always visible) ────────────────────── */}
-        <div className="space-y-2 bg-white/5 border border-white/10 rounded-2xl p-4">
+        <div className="space-y-2 bg-slate-50 border border-slate-200 rounded-2xl p-4">
           <InfoRow icon="🕐" label="When" value={start.toLocaleString(undefined, {
             weekday: "short", month: "short", day: "numeric",
             hour: "numeric", minute: "2-digit",
@@ -124,11 +124,11 @@ export default async function ActivityDetailPage({
           <div className="flex items-center gap-3 pt-1">
             <span className="text-lg">📍</span>
             <div className="flex-1 min-w-0">
-              <p className="text-white/40 text-xs">Meeting spot</p>
+              <p className="text-slate-900/40 text-xs">Meeting spot</p>
               {locationRevealedToMe && a.address_label ? (
                 <p className="text-sm">{a.address_label}</p>
               ) : (
-                <p className="text-sm text-white/40 italic">
+                <p className="text-sm text-slate-900/40 italic">
                   Hidden until {isHost ? "you reveal it" : "the host reveals it"}
                 </p>
               )}
@@ -138,27 +138,27 @@ export default async function ActivityDetailPage({
 
         {/* ── Description ─────────────────────────────────────── */}
         {a.description && (
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
-            <p className="text-xs text-white/50 mb-1.5">Details</p>
-            <p className="text-sm text-white/90 whitespace-pre-wrap">{a.description}</p>
+          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+            <p className="text-xs text-slate-900/50 mb-1.5">Details</p>
+            <p className="text-sm text-slate-900/90 whitespace-pre-wrap">{a.description}</p>
           </div>
         )}
 
         {/* ── Who's coming (public, only approved+) ──────────── */}
         {publicAttendees.length > 0 && (
           <div>
-            <p className="text-xs text-white/50 mb-2">Who&apos;s coming</p>
+            <p className="text-xs text-slate-900/50 mb-2">Who&apos;s coming</p>
             <div className="flex flex-wrap gap-2">
               {publicAttendees.map((att) => (
                 <Link
                   key={att.user_id}
                   href={`/profile/${att.user.id}`}
-                  className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full pl-1 pr-3 py-1"
+                  className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-full pl-1 pr-3 py-1"
                 >
                   <Avatar name={att.user.display_name} url={att.user.avatar_url} />
                   <span className="text-xs">{att.user.display_name}</span>
                   {att.user.id === a.host_id && (
-                    <span className="text-[10px] text-violet-300">host</span>
+                    <span className="text-[10px] text-violet-600">host</span>
                   )}
                 </Link>
               ))}
@@ -202,7 +202,7 @@ function InfoRow({
     <div className="flex items-center gap-3">
       <span className="text-lg">{icon}</span>
       <div className="flex-1 min-w-0">
-        <p className="text-white/40 text-xs">{label}</p>
+        <p className="text-slate-900/40 text-xs">{label}</p>
         <p className="text-sm truncate">{value}</p>
       </div>
     </div>

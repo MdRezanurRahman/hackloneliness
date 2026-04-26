@@ -150,28 +150,28 @@ export function LyannaChat({ onClose, asModal = false }: Props) {
   return (
     <div className={containerClass}>
       <div
-        className={`flex flex-col bg-slate-950 ${
+        className={`flex flex-col bg-white ${
           asModal
-            ? "h-[100dvh] w-full sm:h-[85vh] sm:max-h-[720px] sm:w-full sm:max-w-lg sm:rounded-3xl sm:border sm:border-white/10 overflow-hidden"
+            ? "h-[100dvh] w-full sm:h-[85vh] sm:max-h-[720px] sm:w-full sm:max-w-lg sm:rounded-3xl sm:border sm:border-slate-200 overflow-hidden"
             : "h-full w-full"
         }`}
       >
         {/* Header */}
-        <header className="px-4 py-3 border-b border-white/10 flex items-center gap-3 shrink-0 bg-slate-950/95 backdrop-blur">
+        <header className="px-4 py-3 border-b border-slate-200 flex items-center gap-3 shrink-0 bg-white/90 backdrop-blur">
           <div className="relative">
             <div className="w-9 h-9 rounded-full bg-gradient-to-br from-violet-400 to-indigo-500 flex items-center justify-center text-white font-bold shadow-lg shadow-violet-500/40">
               L
             </div>
-            <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-400 rounded-full border-2 border-slate-950" />
+            <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-400 rounded-full border-2 border-white" />
           </div>
           <div className="flex-1 min-w-0">
-            <h1 className="text-white font-semibold text-[15px] leading-tight">Lyanna</h1>
-            <p className="text-white/50 text-xs">Always here · Private to you</p>
+            <h1 className="text-slate-900 font-semibold text-[15px] leading-tight">Lyanna</h1>
+            <p className="text-slate-900/50 text-xs">Always here · Private to you</p>
           </div>
           {onClose && (
             <button
               onClick={onClose}
-              className="p-2 rounded-lg hover:bg-white/5 text-white/50 hover:text-white transition-colors"
+              className="p-2 rounded-lg hover:bg-slate-100 text-slate-900/50 hover:text-slate-900 transition-colors"
               aria-label="Close chat"
             >
               <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="currentColor" strokeWidth={2}>
@@ -196,8 +196,8 @@ export function LyannaChat({ onClose, asModal = false }: Props) {
         </div>
 
         {/* Input */}
-        <div className="px-3 sm:px-4 pb-4 pt-2 shrink-0 bg-slate-950">
-          <div className="bg-white/5 border border-white/10 rounded-2xl flex items-end gap-2 p-1.5 focus-within:border-violet-400/40 transition-colors">
+        <div className="px-3 sm:px-4 pb-4 pt-2 shrink-0 bg-white">
+          <div className="bg-slate-50 border border-slate-200 rounded-2xl flex items-end gap-2 p-1.5 focus-within:border-violet-400/40 transition-colors">
             <textarea
               ref={inputRef}
               value={input}
@@ -208,7 +208,7 @@ export function LyannaChat({ onClose, asModal = false }: Props) {
               onKeyDown={handleKeyDown}
               placeholder="Message Lyanna…"
               rows={1}
-              className="flex-1 bg-transparent text-white placeholder-white/30 text-[15px] resize-none outline-none leading-relaxed py-2 px-2.5 max-h-[120px] scrollbar-hide"
+              className="flex-1 bg-transparent text-slate-900 placeholder-slate-400 text-[15px] resize-none outline-none leading-relaxed py-2 px-2.5 max-h-[120px] scrollbar-hide"
               disabled={isLoading}
             />
             <button
@@ -217,7 +217,7 @@ export function LyannaChat({ onClose, asModal = false }: Props) {
               className="shrink-0 w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-500 hover:opacity-90 disabled:opacity-30 disabled:cursor-not-allowed transition-opacity flex items-center justify-center"
               aria-label="Send"
             >
-              <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4 text-white" stroke="currentColor" strokeWidth={2.5}>
+              <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4 text-slate-900" stroke="currentColor" strokeWidth={2.5}>
                 <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
@@ -242,7 +242,7 @@ function Bubble({ message, streaming }: { message: ClaudeMessage; streaming?: bo
       <div
         className={`max-w-[85%] sm:max-w-[75%] rounded-2xl px-4 py-2.5 text-[15px] leading-relaxed ${
           isLyanna
-            ? "bg-white/10 text-white rounded-tl-sm"
+            ? "bg-slate-100 text-slate-900 rounded-tl-sm"
             : "bg-gradient-to-br from-violet-500 to-indigo-500 text-white rounded-tr-sm"
         }`}
       >
@@ -261,7 +261,7 @@ function Typing() {
       <div className="w-7 h-7 rounded-full bg-gradient-to-br from-violet-400 to-indigo-500 flex items-center justify-center text-white text-xs font-bold mr-2 mt-1 shrink-0">
         L
       </div>
-      <div className="bg-white/10 rounded-2xl rounded-tl-sm px-4 py-3 flex gap-1 items-center">
+      <div className="bg-slate-100 rounded-2xl rounded-tl-sm px-4 py-3 flex gap-1 items-center">
         <span className="w-2 h-2 bg-white/60 rounded-full animate-bounce [animation-delay:0ms]" />
         <span className="w-2 h-2 bg-white/60 rounded-full animate-bounce [animation-delay:150ms]" />
         <span className="w-2 h-2 bg-white/60 rounded-full animate-bounce [animation-delay:300ms]" />

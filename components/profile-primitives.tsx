@@ -16,10 +16,10 @@ import {
 // ─── Styles shared by text inputs ─────────────────────────────────────
 
 export const INPUT_STYLE =
-  "w-full px-4 py-3.5 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-white/30 focus:outline-none focus:border-violet-400/50 focus:bg-white/[0.07]";
+  "w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-violet-400/50 focus:bg-slate-50";
 
 export const INPUT_STYLE_LARGE =
-  "w-full px-4 py-4 bg-white/5 border border-white/10 rounded-2xl text-white text-lg placeholder-white/30 focus:outline-none focus:border-violet-400/50 focus:bg-white/[0.07]";
+  "w-full px-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 text-lg placeholder-slate-400 focus:outline-none focus:border-violet-400/50 focus:bg-slate-50";
 
 // ─── Chip grid (single or multi select) ──────────────────────────────
 
@@ -66,7 +66,7 @@ function ChipGridImpl<T extends string>({
             className={`px-4 py-3.5 rounded-2xl border text-left text-sm font-medium transition-all active:scale-[0.98] ${
               active
                 ? "bg-gradient-to-br from-violet-500/30 to-indigo-500/30 border-violet-400 text-white"
-                : "bg-white/5 border-white/10 text-white/70 hover:bg-white/[0.07] hover:text-white"
+                : "bg-slate-50 border-slate-200 text-slate-900/70 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
             {opt.icon && <span className="mr-2">{opt.icon}</span>}
@@ -108,7 +108,7 @@ export const VicePicker = memo(function VicePicker({
 
   return (
     <div>
-      <p className="text-white/70 text-sm font-medium mb-2">{label}</p>
+      <p className="text-slate-900/70 text-sm font-medium mb-2">{label}</p>
       <div className="grid grid-cols-2 gap-2">
         {VICE_CHOICES.map((c) => {
           const active = value === c.value;
@@ -120,7 +120,7 @@ export const VicePicker = memo(function VicePicker({
               className={`px-3 py-2.5 rounded-xl border text-sm font-medium transition-all active:scale-[0.98] ${
                 active
                   ? "bg-gradient-to-br from-violet-500/30 to-indigo-500/30 border-violet-400 text-white"
-                  : "bg-white/5 border-white/10 text-white/70"
+                  : "bg-slate-50 border-slate-200 text-slate-900/70"
               }`}
             >
               {c.label}
@@ -166,18 +166,18 @@ export const SocialBatterySlider = memo(function SocialBatterySlider({
           step={1}
           value={value}
           onChange={(e) => onChangeRef.current(Number(e.target.value))}
-          className="w-full accent-violet-400 h-2"
+          className="w-full accent-violet-600 h-2"
         />
-        <div className="flex justify-between text-[10px] text-white/40 mt-1 px-1">
+        <div className="flex justify-between text-[10px] text-slate-900/40 mt-1 px-1">
           {[1, 2, 3, 4, 5].map((n) => (
-            <span key={n} className={n === value ? "text-violet-300 font-semibold" : ""}>•</span>
+            <span key={n} className={n === value ? "text-violet-600 font-semibold" : ""}>•</span>
           ))}
         </div>
       </div>
       {showLabel && (
         <div className="text-center">
-          <p className="text-violet-200 font-semibold text-sm">{labelFor(value)}</p>
-          <p className="text-white/40 text-xs mt-1">
+          <p className="text-violet-700 font-semibold text-sm">{labelFor(value)}</p>
+          <p className="text-slate-900/40 text-xs mt-1">
             Quiet ← 1 · 2 · 3 · 4 · 5 → Life of the party
           </p>
         </div>
@@ -255,7 +255,7 @@ export const DobPicker = memo(function DobPicker({
   }, [y, m, d]);
 
   const selectClass =
-    "w-full px-3 py-3.5 bg-white/5 border border-white/10 rounded-2xl text-white text-base focus:outline-none focus:border-violet-400/50 appearance-none";
+    "w-full px-3 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 text-base focus:outline-none focus:border-violet-400/50 appearance-none";
 
   const age = calculateAge(value);
 
@@ -263,35 +263,35 @@ export const DobPicker = memo(function DobPicker({
     <div className="space-y-3">
       <div className="grid grid-cols-3 gap-2">
         <div>
-          <label className="block text-white/40 text-xs mb-1.5 ml-1">Month</label>
+          <label className="block text-slate-900/40 text-xs mb-1.5 ml-1">Month</label>
           <select value={m} onChange={(e) => setM(e.target.value)} className={selectClass}>
-            <option value="" className="bg-slate-900">—</option>
+            <option value="" className="bg-white">—</option>
             {months.map((name, i) => (
-              <option key={name} value={String(i + 1)} className="bg-slate-900">{name}</option>
+              <option key={name} value={String(i + 1)} className="bg-white">{name}</option>
             ))}
           </select>
         </div>
         <div>
-          <label className="block text-white/40 text-xs mb-1.5 ml-1">Day</label>
+          <label className="block text-slate-900/40 text-xs mb-1.5 ml-1">Day</label>
           <select value={d} onChange={(e) => setD(e.target.value)} className={selectClass}>
-            <option value="" className="bg-slate-900">—</option>
+            <option value="" className="bg-white">—</option>
             {days.map((n) => (
-              <option key={n} value={String(n)} className="bg-slate-900">{n}</option>
+              <option key={n} value={String(n)} className="bg-white">{n}</option>
             ))}
           </select>
         </div>
         <div>
-          <label className="block text-white/40 text-xs mb-1.5 ml-1">Year</label>
+          <label className="block text-slate-900/40 text-xs mb-1.5 ml-1">Year</label>
           <select value={y} onChange={(e) => setY(e.target.value)} className={selectClass}>
-            <option value="" className="bg-slate-900">—</option>
+            <option value="" className="bg-white">—</option>
             {years.map((yr) => (
-              <option key={yr} value={String(yr)} className="bg-slate-900">{yr}</option>
+              <option key={yr} value={String(yr)} className="bg-white">{yr}</option>
             ))}
           </select>
         </div>
       </div>
       {age !== null && age > 0 && (
-        <p className="text-white/50 text-sm">
+        <p className="text-slate-900/50 text-sm">
           {age >= 13 ? `You're ${age} — welcome.` : "You must be 13 or older to join."}
         </p>
       )}

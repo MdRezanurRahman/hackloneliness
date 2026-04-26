@@ -19,7 +19,7 @@ export const viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  themeColor: "#1e1b4b",
+  themeColor: "#ffffff",
 };
 
 const geistSans = Geist({
@@ -38,8 +38,7 @@ export default function RootLayout({
       <body className={`${geistSans.className} antialiased`} suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          forcedTheme="light"
           disableTransitionOnChange
         >
           {children}

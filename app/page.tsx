@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-violet-950 via-indigo-950 to-slate-950 text-white relative overflow-hidden">
+    <main className="min-h-screen bg-white text-slate-900 relative overflow-hidden">
       {/* Decorative glow */}
       <div
         aria-hidden
@@ -24,7 +24,7 @@ export default function Home() {
           </div>
           <Link
             href="/auth/login"
-            className="text-sm text-white/60 hover:text-white transition-colors"
+            className="text-sm text-slate-900/60 hover:text-slate-900 transition-colors"
           >
             Sign in
           </Link>
@@ -32,20 +32,20 @@ export default function Home() {
 
         {/* Hero */}
         <div className="flex-1 flex flex-col items-center justify-center px-5 pb-12 pt-8 sm:pt-16 text-center">
-          <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 mb-6">
+          <div className="inline-flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-full px-4 py-1.5 mb-6">
             <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
-            <span className="text-white/70 text-xs sm:text-sm">Meet Lyanna — your AI companion</span>
+            <span className="text-slate-900/70 text-xs sm:text-sm">Meet Lyanna — your AI companion</span>
           </div>
 
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight mb-5 max-w-3xl leading-[1.05]">
             Loneliness isn&apos;t
             <br />
-            <span className="bg-gradient-to-r from-violet-300 via-fuchsia-300 to-indigo-300 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-violet-600 via-fuchsia-600 to-indigo-600 bg-clip-text text-transparent">
               your story anymore.
             </span>
           </h1>
 
-          <p className="text-white/60 text-base sm:text-lg max-w-md sm:max-w-xl mb-8 leading-relaxed">
+          <p className="text-slate-900/60 text-base sm:text-lg max-w-md sm:max-w-xl mb-8 leading-relaxed">
             Real people. Real meetups. A companion that gets you.
             Lyanna learns who you are, then helps you build the life you actually want.
           </p>
@@ -53,13 +53,13 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-3 w-full max-w-sm sm:max-w-md sm:w-auto">
             <Link
               href="/auth/sign-up"
-              className="w-full sm:w-auto px-6 py-3.5 rounded-full bg-white text-slate-900 font-semibold hover:bg-white/90 transition-colors text-center"
+              className="w-full sm:w-auto px-6 py-3.5 rounded-full bg-gradient-to-r from-violet-500 to-indigo-500 text-white font-semibold hover:opacity-90 transition-opacity text-center"
             >
               Get started — it&apos;s free
             </Link>
             <Link
               href="/auth/login"
-              className="w-full sm:w-auto px-6 py-3.5 rounded-full bg-white/10 border border-white/15 font-semibold hover:bg-white/15 transition-colors text-center"
+              className="w-full sm:w-auto px-6 py-3.5 rounded-full bg-slate-100 border border-slate-200 font-semibold hover:bg-slate-200 transition-colors text-center"
             >
               I have an account
             </Link>
@@ -85,7 +85,7 @@ export default function Home() {
           </div>
         </div>
 
-        <footer className="px-5 py-6 text-center text-white/30 text-xs">
+        <footer className="px-5 py-6 text-center text-slate-900/30 text-xs">
           Built with care. You belong here.
         </footer>
       </div>
@@ -95,10 +95,10 @@ export default function Home() {
 
 function FeatureCard({ icon, title, body }: { icon: string; title: string; body: string }) {
   return (
-    <div className="bg-white/5 border border-white/10 rounded-2xl p-5 text-left backdrop-blur-sm hover:bg-white/[0.07] transition-colors">
+    <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 text-left backdrop-blur-sm hover:bg-slate-100 transition-colors">
       <div className="text-2xl mb-2">{icon}</div>
       <h3 className="font-semibold text-sm mb-1.5">{title}</h3>
-      <p className="text-white/50 text-xs leading-relaxed">{body}</p>
+      <p className="text-slate-900/50 text-xs leading-relaxed">{body}</p>
     </div>
   );
 }
