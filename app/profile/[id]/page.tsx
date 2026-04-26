@@ -4,6 +4,7 @@ import Link from "next/link";
 import { BottomNav } from "@/components/bottom-nav";
 import { LyannaFab } from "@/components/lyanna-fab";
 import { ProfileActions } from "./actions";
+import { PastEventsList, type PastEventRow } from "./past-events";
 
 export default async function ProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -27,6 +28,18 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
 
   const isMe = me.id === id;
   const postCount = posts?.length ?? 0;
+
+  // Past hosted events. Owner sees all; visitors see only is_public = true.
+  let pastQuery = supabase
+    .from("activities")
+    .select("id, title, category, city, address_label, starts_at, duration_mins, current_count, max_attendees, is_public, status")
+    .eq("host_id", id)
+    .lt("starts_at", new Date().toISOString())
+    .order("starts_at", { ascending: false })
+    .limit(20);
+  if (!isMe) pastQuery = pastQuery.eq("is_public", true);
+  const { data: pastEventsRaw } = await pastQuery;
+  const pastEvents = (pastEventsRaw ?? []) as PastEventRow[];
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-violet-950 via-indigo-950 to-slate-950 text-white pb-24">
@@ -93,7 +106,12 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
         </div>
       </div>
 
-      <div className="max-w-md mx-auto mt-8 border-t border-white/10">
+      {/* Past hosted meetups — host sees all, visitors see only public ones */}
+      <div className="max-w-md mx-auto mt-6 border-t border-white/10">
+        <PastEventsList events={pastEvents} isOwner={isMe} />
+      </div>
+
+      <div className="max-w-md mx-auto mt-2 border-t border-white/10">
         {postCount === 0 ? (
           <div className="text-center py-12 text-white/40 text-sm">
             {isMe ? (
