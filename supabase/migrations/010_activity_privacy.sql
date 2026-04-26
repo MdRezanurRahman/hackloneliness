@@ -13,6 +13,8 @@
 alter table public.activities
   add column if not exists is_public boolean not null default true;
 
-create index if not exists activities_host_past_idx
-  on public.activities (host_id, starts_at desc)
-  where starts_at < now();
+-- Plain composite index — partial indexes can't use now() because
+-- their predicate must be IMMUTABLE. (host_id, starts_at desc) still
+-- gives us efficient ordering for the per-profile past-events query.
+create index if not exists activities_host_starts_at_idx
+  on public.activities (host_id, starts_at desc);
