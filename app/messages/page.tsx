@@ -19,7 +19,13 @@ export default async function MessagesPage() {
   if (!user) redirect("/auth/login");
 
   const { data: rawConvos } = await supabase.rpc("my_conversations");
-  const conversations = (rawConvos ?? []) as ConversationRow[];
+  // Hide conversations that don't have any messages yet — same model as
+  // WhatsApp / Messenger: an empty chat shouldn't clutter the list.
+  // start_conversation is idempotent, so re-tapping "Message" on the profile
+  // takes them right back to the same (still-empty) conversation.
+  const conversations = ((rawConvos ?? []) as ConversationRow[]).filter(
+    (c) => c.last_message_preview != null && c.last_message_preview !== "",
+  );
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-violet-950 via-indigo-950 to-slate-950 text-white pb-24">
@@ -59,10 +65,14 @@ export default async function MessagesPage() {
                         </p>
                       </div>
                       <div className="flex items-center justify-between gap-2 mt-0.5">
-                        <p className={`text-sm truncate ${
-                          hasUnread ? "text-white/90" : "text-white/50"
-                        }`}>
-                          {c.last_message_preview ?? "Say hello…"}
+                        <p
+                          className={`text-sm truncate ${
+                            hasUnread
+                              ? "text-white font-semibold"
+                              : "text-white/40"
+                          }`}
+                        >
+                          {c.last_message_preview}
                         </p>
                         {hasUnread && (
                           <span className="shrink-0 min-w-[20px] h-5 px-1.5 rounded-full bg-gradient-to-br from-violet-400 to-indigo-500 text-white text-[11px] font-bold flex items-center justify-center">
