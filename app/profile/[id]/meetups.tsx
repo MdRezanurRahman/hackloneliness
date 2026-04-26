@@ -76,30 +76,67 @@ function MeetupColumn({
   isPast: boolean;
   empty: string;
 }) {
+  // Each column owns its own open state — toggling one never touches the
+  // other. Hidden by default per spec; first click expands, second click
+  // collapses again.
+  const [open, setOpen] = useState(false);
+
   return (
     <div className="min-w-0">
-      <h3 className="font-semibold text-sm text-white mb-2 flex items-center gap-1.5">
-        <span>{emoji}</span>
-        <span>{title}</span>
-        <span className="text-white/40 text-xs font-normal">{events.length}</span>
-      </h3>
-      {events.length === 0 ? (
-        <div className="bg-white/[0.03] border border-dashed border-white/10 rounded-xl p-3 text-center">
-          <p className="text-[11px] text-white/40">{empty}</p>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className={`w-full flex items-center gap-1.5 px-3 py-2.5 border rounded-xl transition-colors text-left ${
+          open
+            ? "bg-white/[0.07] border-violet-400/30"
+            : "bg-white/5 border-white/10 hover:bg-white/[0.07]"
+        }`}
+      >
+        <span className="text-base shrink-0">{emoji}</span>
+        <span className="font-semibold text-sm text-white truncate">{title}</span>
+        <span className="text-white/40 text-xs">{events.length}</span>
+        <Chevron open={open} className="ml-auto" />
+      </button>
+
+      {open && (
+        <div className="mt-2">
+          {events.length === 0 ? (
+            <div className="bg-white/[0.03] border border-dashed border-white/10 rounded-xl p-3 text-center">
+              <p className="text-[11px] text-white/40">{empty}</p>
+            </div>
+          ) : (
+            <ul className="space-y-2">
+              {events.map((e) => (
+                <MeetupCardCompact
+                  key={e.id}
+                  event={e}
+                  isOwner={isOwner}
+                  isPast={isPast}
+                />
+              ))}
+            </ul>
+          )}
         </div>
-      ) : (
-        <ul className="space-y-2">
-          {events.map((e) => (
-            <MeetupCardCompact
-              key={e.id}
-              event={e}
-              isOwner={isOwner}
-              isPast={isPast}
-            />
-          ))}
-        </ul>
       )}
     </div>
+  );
+}
+
+function Chevron({ open, className }: { open: boolean; className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2.5}
+      className={`w-4 h-4 text-white/40 transition-transform duration-200 ${
+        open ? "rotate-180" : ""
+      } ${className ?? ""}`}
+      aria-hidden
+    >
+      <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
 }
 
