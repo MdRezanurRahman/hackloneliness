@@ -3,8 +3,9 @@ import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { BottomNav } from "@/components/bottom-nav";
 import { LyannaFab } from "@/components/lyanna-fab";
+import { ProfileDrawer } from "@/components/profile-drawer";
 import { ProfileActions } from "./actions";
-import { PastEventsList, type PastEventRow } from "./past-events";
+import { MeetupsRow, type MeetupRow } from "./meetups";
 
 export default async function ProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -28,32 +29,49 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
 
   const isMe = me.id === id;
   const postCount = posts?.length ?? 0;
+  const nowIso = new Date().toISOString();
+
+  const meetupSelect =
+    "id, title, category, city, address_label, starts_at, duration_mins, current_count, max_attendees, is_public, status";
 
   // Past hosted events. Owner sees all; visitors see only is_public = true.
   let pastQuery = supabase
     .from("activities")
-    .select("id, title, category, city, address_label, starts_at, duration_mins, current_count, max_attendees, is_public, status")
+    .select(meetupSelect)
     .eq("host_id", id)
-    .lt("starts_at", new Date().toISOString())
+    .lt("starts_at", nowIso)
     .order("starts_at", { ascending: false })
     .limit(20);
   if (!isMe) pastQuery = pastQuery.eq("is_public", true);
   const { data: pastEventsRaw } = await pastQuery;
-  const pastEvents = (pastEventsRaw ?? []) as PastEventRow[];
+  const pastEvents = (pastEventsRaw ?? []) as MeetupRow[];
+
+  // Upcoming hosted events. Public for visitors, all for owner.
+  let upcomingQuery = supabase
+    .from("activities")
+    .select(meetupSelect)
+    .eq("host_id", id)
+    .gte("starts_at", nowIso)
+    .order("starts_at", { ascending: true })
+    .limit(20);
+  if (!isMe) upcomingQuery = upcomingQuery.eq("is_public", true);
+  const { data: upcomingEventsRaw } = await upcomingQuery;
+  const upcomingEvents = (upcomingEventsRaw ?? []) as MeetupRow[];
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-violet-950 via-indigo-950 to-slate-950 text-white pb-24">
       <header className="px-5 py-4 flex items-center justify-between border-b border-white/5">
         <Link href="/home" className="text-white/60 text-sm">← Back</Link>
-        <h1 className="font-semibold text-center">{profile.display_name}</h1>
-        <div className="w-10" />
+        <h1 className="font-semibold text-center truncate px-2">{profile.display_name}</h1>
+        {isMe ? <ProfileDrawer /> : <div className="w-10" />}
       </header>
 
+      {/* ─── Identity block ──────────────────────────────────────── */}
       <div className="max-w-md mx-auto px-5 pt-6">
         <div className="flex items-center gap-4">
           <Avatar name={profile.display_name} url={profile.avatar_url} size="lg" />
           <div className="flex-1 grid grid-cols-3 text-center">
-            <Stat value={postCount} label="posts" />
+            <Stat value={postCount} label="echoes" />
             <Stat value={profile.reputation_score?.toFixed(1) ?? "5.0"} label="rep" />
             <Stat value={profile.safety_score?.toFixed(1) ?? "5.0"} label="safety" />
           </div>
@@ -73,7 +91,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
           </div>
           {profile.bio && <p className="text-white/70 text-sm mt-1 whitespace-pre-wrap">{profile.bio}</p>}
 
-          {/* Education / occupation row */}
+          {/* Education / occupation */}
           <div className="mt-3 space-y-1 text-sm text-white/70">
             {profile.ai_profile?.education && (
               <p>🎓 {profile.ai_profile.education as string}</p>
@@ -83,7 +101,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
             )}
           </div>
 
-          {/* Weekend vibe chips (new) — falls back to legacy goals */}
+          {/* Weekend vibe chips */}
           {(() => {
             const weekend = (profile.ai_profile?.ideal_weekend as string[] | undefined) ?? [];
             const legacy  = (profile.ai_profile?.goals         as string[] | undefined) ?? [];
@@ -101,28 +119,44 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
           })()}
         </div>
 
-        <div className="mt-5">
-          <ProfileActions profileId={id} isMe={isMe} />
-        </div>
+        {/* Visitor-only action bar (owner uses the drawer instead) */}
+        {!isMe && (
+          <div className="mt-5">
+            <ProfileActions profileId={id} isMe={isMe} />
+          </div>
+        )}
       </div>
 
-      {/* Past hosted meetups — host sees all, visitors see only public ones */}
+      {/* ─── Meetups: Upcoming + Past, side-by-side ────────────── */}
       <div className="max-w-md mx-auto mt-6 border-t border-white/10">
-        <PastEventsList events={pastEvents} isOwner={isMe} />
+        <MeetupsRow upcoming={upcomingEvents} past={pastEvents} isOwner={isMe} />
       </div>
 
-      <div className="max-w-md mx-auto mt-2 border-t border-white/10">
+      {/* ─── Echoes (separate section below the meetups row) ───── */}
+      <div className="max-w-md mx-auto border-t border-white/10">
+        <div className="px-5 pt-5 pb-3 flex items-center justify-between">
+          <h3 className="font-semibold text-white">
+            Echoes
+            <span className="ml-2 text-white/40 text-sm font-normal">{postCount}</span>
+          </h3>
+          {isMe && (
+            <Link href="/echoes/new" className="text-xs text-violet-300 hover:text-violet-200">
+              + New echo
+            </Link>
+          )}
+        </div>
+
         {postCount === 0 ? (
-          <div className="text-center py-12 text-white/40 text-sm">
+          <div className="text-center py-10 px-5 text-white/40 text-sm">
             {isMe ? (
               <>
-                No posts yet.{" "}
-                <Link href="/posts/new" className="text-violet-300">
-                  Share your first photo →
+                No echoes yet.{" "}
+                <Link href="/echoes/new" className="text-violet-300">
+                  Share your first one →
                 </Link>
               </>
             ) : (
-              "No posts yet."
+              "No echoes yet."
             )}
           </div>
         ) : (
