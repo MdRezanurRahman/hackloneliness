@@ -22,6 +22,15 @@ export default async function ChatThreadPage({
     .maybeSingle();
   if (!me) notFound();
 
+  // Opening the thread = marking everything in it as read.
+  // This UPDATE fires the bottom nav's realtime listener, which
+  // refetches the unread count and clears the badge for this convo.
+  await supabase
+    .from("conversation_participants")
+    .update({ last_read_at: new Date().toISOString() })
+    .eq("conversation_id", id)
+    .eq("user_id", user.id);
+
   // Other participant
   const { data: other } = await supabase
     .from("conversation_participants")

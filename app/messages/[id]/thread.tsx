@@ -39,6 +39,18 @@ export function ChatThread({
             if (prev.some((x) => x.id === m.id)) return prev;
             return [...prev, m];
           });
+
+          // If the incoming message is from the other user, advance my
+          // last_read_at — I'm clearly viewing the thread right now.
+          // The UPDATE fires the bottom nav listener so the badge clears.
+          if (m.sender_id !== currentUserId) {
+            supabase
+              .from("conversation_participants")
+              .update({ last_read_at: new Date().toISOString() })
+              .eq("conversation_id", conversationId)
+              .eq("user_id", currentUserId)
+              .then(() => {});
+          }
         },
       )
       .subscribe();
@@ -46,7 +58,7 @@ export function ChatThread({
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [conversationId]);
+  }, [conversationId, currentUserId]);
 
   // Auto-scroll to bottom when messages change
   useEffect(() => {
