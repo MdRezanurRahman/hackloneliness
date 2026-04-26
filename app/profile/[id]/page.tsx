@@ -6,6 +6,7 @@ import { LyannaFab } from "@/components/lyanna-fab";
 import { ProfileDrawer } from "@/components/profile-drawer";
 import { ProfileActions } from "./actions";
 import { MeetupsRow, type MeetupRow } from "./meetups";
+import { EchoesSection, type EchoTile } from "./echoes";
 
 export default async function ProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -134,70 +135,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
 
       {/* ─── Echoes (separate section below the meetups row) ───── */}
       <div className="max-w-md mx-auto border-t border-white/10">
-        <div className="px-5 pt-5 pb-3 flex items-center justify-between">
-          <h3 className="font-semibold text-white">
-            Echoes
-            <span className="ml-2 text-white/40 text-sm font-normal">{postCount}</span>
-          </h3>
-          {isMe && (
-            <Link href="/echoes/new" className="text-xs text-violet-300 hover:text-violet-200">
-              + New echo
-            </Link>
-          )}
-        </div>
-
-        {postCount === 0 ? (
-          <div className="text-center py-10 px-5 text-white/40 text-sm">
-            {isMe ? (
-              <>
-                No echoes yet.{" "}
-                <Link href="/echoes/new" className="text-violet-300">
-                  Share your first one →
-                </Link>
-              </>
-            ) : (
-              "No echoes yet."
-            )}
-          </div>
-        ) : (
-          <div className="grid grid-cols-3 gap-0.5">
-            {posts!.map((post) => (
-              <Link
-                key={post.id}
-                href={`/home`}
-                className="relative aspect-square bg-black overflow-hidden"
-              >
-                {post.post_type === "image" && post.image_url && (
-                  /* eslint-disable-next-line @next/next/no-img-element */
-                  <img src={post.image_url} alt="" className="w-full h-full object-cover" />
-                )}
-                {post.post_type === "video" && post.video_url && (
-                  <>
-                    <video
-                      src={post.video_url}
-                      muted
-                      playsInline
-                      preload="metadata"
-                      className="w-full h-full object-cover"
-                    />
-                    <span className="absolute top-1.5 right-1.5 text-white drop-shadow">
-                      <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </span>
-                  </>
-                )}
-                {post.post_type === "text" && (
-                  <div className="w-full h-full bg-gradient-to-br from-violet-500/40 via-indigo-500/30 to-slate-900 p-2 flex items-center justify-center text-center">
-                    <p className="text-[11px] leading-snug text-white/90 line-clamp-6 break-words">
-                      {post.caption}
-                    </p>
-                  </div>
-                )}
-              </Link>
-            ))}
-          </div>
-        )}
+        <EchoesSection posts={(posts ?? []) as EchoTile[]} isOwner={isMe} />
       </div>
 
       <LyannaFab />
