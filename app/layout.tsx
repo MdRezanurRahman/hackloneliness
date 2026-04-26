@@ -38,7 +38,8 @@ export default function RootLayout({
       <body className={`${geistSans.className} antialiased`} suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
-          forcedTheme="light"
+          defaultTheme="light"
+          enableSystem={false}
           disableTransitionOnChange
         >
           {children}

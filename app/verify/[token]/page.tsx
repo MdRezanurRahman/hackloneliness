@@ -19,7 +19,7 @@ export default async function VerifyPage({ params }: { params: Promise<{ token: 
   const expired = log ? new Date(log.token_expires_at) < now : true;
 
   return (
-    <main className="min-h-screen bg-white text-slate-900 flex items-center justify-center p-5">
+    <main className="min-h-screen bg-white dark:bg-black dark:bg-black text-slate-900 dark:text-white flex items-center justify-center p-5">
       <div className="w-full max-w-sm text-center">
         {!log ? (
           <Panel emoji="❓" title="Code not found" body="This QR code doesn't match any active meetup." />
@@ -33,7 +33,7 @@ export default async function VerifyPage({ params }: { params: Promise<{ token: 
           <ConfirmVerification logId={log.id} activityId={log.activity_id} />
         )}
 
-        <Link href="/home" className="inline-block mt-6 text-sm text-violet-600 hover:text-violet-700">
+        <Link href="/home" className="inline-block mt-6 text-sm text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-200 dark:text-violet-300">
           ← Back to app
         </Link>
       </div>
@@ -46,7 +46,7 @@ function Panel({ emoji, title, body }: { emoji: string; title: string; body: str
     <>
       <div className="text-5xl mb-4">{emoji}</div>
       <h1 className="text-2xl font-semibold mb-2">{title}</h1>
-      <p className="text-slate-900/60 text-sm">{body}</p>
+      <p className="text-slate-900/60 dark:text-white/60 text-sm">{body}</p>
     </>
   );
 }

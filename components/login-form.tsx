@@ -94,10 +94,10 @@ export function LoginForm({
     <div className={cn("w-full", className)} {...props}>
       <div className="mb-6 text-center">
         <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-400 to-indigo-500 mb-4">
-          <span className="text-slate-900 font-bold text-lg">h</span>
+          <span className="text-slate-900 dark:text-white font-bold text-lg">h</span>
         </div>
-        <h1 className="text-2xl font-semibold text-slate-900">Welcome back</h1>
-        <p className="text-slate-900/50 text-sm mt-1">Lyanna is waiting for you</p>
+        <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">Welcome back</h1>
+        <p className="text-slate-900/50 dark:text-white/50 text-sm mt-1">Lyanna is waiting for you</p>
       </div>
 
       {/* Demo button — top of form for easy access */}
@@ -111,14 +111,14 @@ export function LoginForm({
       </button>
 
       <div className="flex items-center gap-3 my-4">
-        <div className="h-px bg-slate-100 flex-1" />
-        <span className="text-slate-900/30 text-xs">or sign in</span>
-        <div className="h-px bg-slate-100 flex-1" />
+        <div className="h-px bg-slate-100 dark:bg-slate-800 flex-1" />
+        <span className="text-slate-900/30 dark:text-white/30 text-xs">or sign in</span>
+        <div className="h-px bg-slate-100 dark:bg-slate-800 flex-1" />
       </div>
 
       <form onSubmit={handleLogin} className="space-y-4">
         <div>
-          <label htmlFor="email" className="block text-sm text-slate-900/70 mb-1.5">
+          <label htmlFor="email" className="block text-sm text-slate-900/70 dark:text-white/70 mb-1.5">
             Email
           </label>
           <input
@@ -128,18 +128,18 @@ export function LoginForm({
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-violet-400/50 focus:bg-slate-50 transition-colors"
+            className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-violet-400/50 focus:bg-slate-50 dark:bg-slate-900 transition-colors"
           />
         </div>
 
         <div>
           <div className="flex items-center justify-between mb-1.5">
-            <label htmlFor="password" className="block text-sm text-slate-900/70">
+            <label htmlFor="password" className="block text-sm text-slate-900/70 dark:text-white/70">
               Password
             </label>
             <Link
               href="/auth/forgot-password"
-              className="text-xs text-violet-600 hover:text-violet-700"
+              className="text-xs text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-200 dark:text-violet-300"
             >
               Forgot?
             </Link>
@@ -150,12 +150,12 @@ export function LoginForm({
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-violet-400/50 focus:bg-slate-50 transition-colors"
+            className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-violet-400/50 focus:bg-slate-50 dark:bg-slate-900 transition-colors"
           />
         </div>
 
         {error && (
-          <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg p-3">
+          <div className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-lg p-3">
             {error}
           </div>
         )}
@@ -169,17 +169,17 @@ export function LoginForm({
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-slate-900/50">
+      <p className="mt-6 text-center text-sm text-slate-900/50 dark:text-white/50">
         New here?{" "}
-        <Link href="/auth/sign-up" className="text-violet-600 hover:text-violet-700 font-medium">
+        <Link href="/auth/sign-up" className="text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-200 dark:text-violet-300 font-medium">
           Create an account
         </Link>
       </p>
 
-      <div className="mt-6 p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-900/50">
-        <p className="font-medium text-slate-900/70 mb-1">Demo credentials</p>
-        <p>Email: <span className="text-slate-900/80">{DEMO_EMAIL}</span></p>
-        <p>Password: <span className="text-slate-900/80">{DEMO_PASSWORD}</span></p>
+      <div className="mt-6 p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs text-slate-900/50 dark:text-white/50">
+        <p className="font-medium text-slate-900/70 dark:text-white/70 mb-1">Demo credentials</p>
+        <p>Email: <span className="text-slate-900/80 dark:text-white/80">{DEMO_EMAIL}</span></p>
+        <p>Password: <span className="text-slate-900/80 dark:text-white/80">{DEMO_PASSWORD}</span></p>
       </div>
     </div>
   );

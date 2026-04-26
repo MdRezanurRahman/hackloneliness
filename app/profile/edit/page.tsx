@@ -215,21 +215,21 @@ export default function EditProfilePage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-white text-slate-900 flex items-center justify-center">
-        <p className="text-slate-900/50">Loading your profile…</p>
+      <main className="min-h-screen bg-white dark:bg-black dark:bg-black text-slate-900 dark:text-white flex items-center justify-center">
+        <p className="text-slate-900/50 dark:text-white/50">Loading your profile…</p>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-white text-slate-900 pb-20">
-      <header className="sticky top-0 z-20 px-5 py-4 flex items-center justify-between border-b border-slate-100 bg-white/90 backdrop-blur-md">
-        <Link href="/profile/me" className="text-slate-900/60 text-sm">← Cancel</Link>
+    <main className="min-h-screen bg-white dark:bg-black dark:bg-black text-slate-900 dark:text-white pb-20">
+      <header className="sticky top-0 z-20 px-5 py-4 flex items-center justify-between border-b border-slate-100 dark:border-slate-900 bg-white/90 dark:bg-black/90 backdrop-blur-md">
+        <Link href="/profile/me" className="text-slate-900/60 dark:text-white/60 text-sm">← Cancel</Link>
         <h1 className="font-semibold">Edit profile</h1>
         <button
           onClick={save}
           disabled={saving}
-          className="text-sm font-semibold text-violet-600 disabled:opacity-30"
+          className="text-sm font-semibold text-violet-600 dark:text-violet-400 disabled:opacity-30"
         >
           {saving ? "Saving…" : "Save"}
         </button>
@@ -254,7 +254,7 @@ export default function EditProfilePage() {
           </div>
           <button
             onClick={() => fileRef.current?.click()}
-            className="text-sm text-violet-600 hover:text-violet-700"
+            className="text-sm text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-200 dark:text-violet-300"
           >
             Change photo
           </button>
@@ -276,7 +276,7 @@ export default function EditProfilePage() {
             placeholder="What your community sees"
             className={INPUT_STYLE}
           />
-          <p className="text-slate-900/40 text-xs -mt-3">
+          <p className="text-slate-900/40 dark:text-white/40 text-xs -mt-3">
             Usually the first word of your full name. Only you can change it.
           </p>
 
@@ -288,7 +288,7 @@ export default function EditProfilePage() {
             placeholder="A line or two about you…"
             className={`${INPUT_STYLE} resize-none`}
           />
-          <p className="text-right text-xs text-slate-900/30 -mt-3">{form.bio.length}/200</p>
+          <p className="text-right text-xs text-slate-900/30 dark:text-white/30 -mt-3">{form.bio.length}/200</p>
         </section>
 
         {/* ─── Section A: The Basics ─────────────────────────── */}
@@ -430,7 +430,7 @@ export default function EditProfilePage() {
 
         {/* ─── Error + Save shortcut ─────────────────────────── */}
         {error && (
-          <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg p-3">
+          <div className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-lg p-3">
             {error}
           </div>
         )}
@@ -444,12 +444,12 @@ export default function EditProfilePage() {
         </button>
 
         {/* ─── Danger zone ───────────────────────────────────── */}
-        <div className="pt-6 mt-2 border-t border-slate-100">
-          <p className="text-xs text-slate-900/40 mb-2">Account</p>
+        <div className="pt-6 mt-2 border-t border-slate-100 dark:border-slate-900">
+          <p className="text-xs text-slate-900/40 dark:text-white/40 mb-2">Account</p>
           <button
             type="button"
             onClick={signOut}
-            className="w-full py-3 rounded-xl bg-red-50 border border-red-200 text-red-600 font-medium hover:bg-red-100 transition-colors"
+            className="w-full py-3 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 font-medium hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors"
           >
             Sign out
           </button>
@@ -462,7 +462,7 @@ export default function EditProfilePage() {
 // ─── Small layout helpers ────────────────────────────────────────────
 
 function Label({ children }: { children: React.ReactNode }) {
-  return <label className="block text-xs text-slate-900/60">{children}</label>;
+  return <label className="block text-xs text-slate-900/60 dark:text-white/60">{children}</label>;
 }
 
 function Field({
@@ -474,7 +474,7 @@ function Field({
 }) {
   return (
     <div>
-      <p className="text-sm text-slate-900/70 font-medium mb-2">{label}</p>
+      <p className="text-sm text-slate-900/70 dark:text-white/70 font-medium mb-2">{label}</p>
       {children}
     </div>
   );
@@ -484,8 +484,8 @@ function SectionHeading({ emoji, label }: { emoji: string; label: string }) {
   return (
     <div className="flex items-center gap-2 pt-4">
       <span className="text-xl">{emoji}</span>
-      <h2 className="text-lg font-semibold text-slate-900">{label}</h2>
-      <div className="flex-1 h-px bg-slate-100 ml-1" />
+      <h2 className="text-lg font-semibold text-slate-900 dark:text-white">{label}</h2>
+      <div className="flex-1 h-px bg-slate-100 dark:bg-slate-800 ml-1" />
     </div>
   );
 }

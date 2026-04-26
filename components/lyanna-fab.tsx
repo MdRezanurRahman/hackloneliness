@@ -162,7 +162,7 @@ export function LyannaFab() {
         {!isFaded && !isDragging && (
           <span className="absolute inset-0 rounded-full bg-violet-400/50 animate-ping opacity-40" aria-hidden />
         )}
-        <span className="relative text-slate-900 font-bold text-xl pointer-events-none">L</span>
+        <span className="relative text-slate-900 dark:text-white font-bold text-xl pointer-events-none">L</span>
         <span className="absolute bottom-1 right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-white pointer-events-none" />
       </button>
 

@@ -52,9 +52,9 @@ export default async function ChatThreadPage({
     .limit(100);
 
   return (
-    <main className="min-h-[100dvh] flex flex-col bg-white text-slate-900">
-      <header className="px-4 py-3 flex items-center gap-3 border-b border-slate-100 bg-white/90 backdrop-blur-md sticky top-0 z-20">
-        <Link href="/messages" className="text-slate-900/60 hover:text-slate-900">←</Link>
+    <main className="min-h-[100dvh] flex flex-col bg-white dark:bg-black dark:bg-black text-slate-900 dark:text-white">
+      <header className="px-4 py-3 flex items-center gap-3 border-b border-slate-100 dark:border-slate-900 bg-white/90 dark:bg-black/90 backdrop-blur-md sticky top-0 z-20">
+        <Link href="/messages" className="text-slate-900/60 dark:text-white/60 hover:text-slate-900 dark:hover:text-white dark:text-white">←</Link>
         {otherUser && (
           <Link href={`/profile/${otherUser.id}`} className="flex items-center gap-2 flex-1 min-w-0">
             <Avatar name={otherUser.display_name} url={otherUser.avatar_url} />

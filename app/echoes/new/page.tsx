@@ -118,16 +118,16 @@ export default function NewEchoPage() {
   };
 
   return (
-    <main className="min-h-screen bg-white text-slate-900">
-      <header className="px-5 py-4 flex items-center justify-between border-b border-slate-100">
-        <Link href="/home" className="text-slate-900/60 hover:text-slate-900 text-sm">
+    <main className="min-h-screen bg-white dark:bg-black dark:bg-black text-slate-900 dark:text-white">
+      <header className="px-5 py-4 flex items-center justify-between border-b border-slate-100 dark:border-slate-900">
+        <Link href="/home" className="text-slate-900/60 dark:text-white/60 hover:text-slate-900 dark:hover:text-white dark:text-white text-sm">
           ← Cancel
         </Link>
         <h1 className="font-semibold">New echo</h1>
         <button
           onClick={submit}
           disabled={!canPost || posting}
-          className="text-sm font-semibold text-violet-600 disabled:opacity-30"
+          className="text-sm font-semibold text-violet-600 dark:text-violet-400 disabled:opacity-30"
         >
           {posting ? "Posting…" : "Share"}
         </button>
@@ -135,7 +135,7 @@ export default function NewEchoPage() {
 
       <div className="max-w-md mx-auto px-5 py-5 space-y-4">
         {/* Mode tabs */}
-        <div className="grid grid-cols-3 gap-1 p-1 bg-slate-50 border border-slate-200 rounded-2xl">
+        <div className="grid grid-cols-3 gap-1 p-1 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl">
           <ModeTab current={mode} mode="text"  onClick={switchMode} label="Text"  icon="✍️" />
           <ModeTab current={mode} mode="image" onClick={switchMode} label="Photo" icon="📷" />
           <ModeTab current={mode} mode="video" onClick={switchMode} label="Video" icon="🎬" />
@@ -143,16 +143,16 @@ export default function NewEchoPage() {
 
         {/* Mode-specific content area */}
         {mode === "text" && (
-          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+          <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4">
             <textarea
               autoFocus
               value={caption}
               onChange={(e) => setCaption(e.target.value.slice(0, MAX_TEXT_LEN))}
               placeholder="What's on your mind? Share a thought, a win, a feeling, a question…"
               rows={8}
-              className="w-full bg-transparent text-slate-900 text-[17px] leading-relaxed placeholder-slate-400 resize-none outline-none"
+              className="w-full bg-transparent text-slate-900 dark:text-white text-[17px] leading-relaxed placeholder-slate-400 dark:placeholder-slate-500 resize-none outline-none"
             />
-            <div className="flex items-center justify-between text-xs text-slate-900/30 mt-1">
+            <div className="flex items-center justify-between text-xs text-slate-900/30 dark:text-white/30 mt-1">
               <span>Your echo</span>
               <span>{caption.length} / {MAX_TEXT_LEN}</span>
             </div>
@@ -191,12 +191,12 @@ export default function NewEchoPage() {
             onChange={(e) => setCaption(e.target.value.slice(0, MAX_TEXT_LEN))}
             placeholder="Write a caption… (optional)"
             rows={3}
-            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 placeholder-slate-400 resize-none focus:outline-none focus:border-violet-400/50"
+            className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 resize-none focus:outline-none focus:border-violet-400/50"
           />
         )}
 
         {error && (
-          <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg p-3">
+          <div className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-lg p-3">
             {error}
           </div>
         )}
@@ -227,7 +227,7 @@ function ModeTab({
       className={`py-2.5 rounded-xl text-sm font-semibold transition-all ${
         active
           ? "bg-gradient-to-br from-violet-500 to-indigo-500 text-white shadow-lg shadow-violet-500/30"
-          : "text-slate-900/60 hover:text-slate-900"
+          : "text-slate-900/60 dark:text-white/60 hover:text-slate-900 dark:hover:text-white dark:text-white"
       }`}
     >
       <span className="mr-1.5">{icon}</span>
@@ -260,13 +260,13 @@ function ImagePicker({
   return (
     <button
       onClick={onPick}
-      className="w-full aspect-square bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-slate-100 transition-colors"
+      className="w-full aspect-square bg-slate-50 dark:bg-slate-900 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-800 dark:bg-slate-800 transition-colors"
     >
       <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-400 to-indigo-500 flex items-center justify-center text-2xl">
         📷
       </div>
-      <p className="text-slate-900/70 text-sm">Tap to pick a photo</p>
-      <p className="text-slate-900/30 text-xs">JPG, PNG, HEIC · up to 8 MB</p>
+      <p className="text-slate-900/70 dark:text-white/70 text-sm">Tap to pick a photo</p>
+      <p className="text-slate-900/30 dark:text-white/30 text-xs">JPG, PNG, HEIC · up to 8 MB</p>
     </button>
   );
 }
@@ -299,13 +299,13 @@ function VideoPicker({
   return (
     <button
       onClick={onPick}
-      className="w-full aspect-video bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-slate-100 transition-colors"
+      className="w-full aspect-video bg-slate-50 dark:bg-slate-900 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-800 dark:bg-slate-800 transition-colors"
     >
       <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-400 to-indigo-500 flex items-center justify-center text-2xl">
         🎬
       </div>
-      <p className="text-slate-900/70 text-sm">Tap to pick a video</p>
-      <p className="text-slate-900/30 text-xs">MP4, WebM, MOV · up to 50 MB</p>
+      <p className="text-slate-900/70 dark:text-white/70 text-sm">Tap to pick a video</p>
+      <p className="text-slate-900/30 dark:text-white/30 text-xs">MP4, WebM, MOV · up to 50 MB</p>
     </button>
   );
 }

@@ -94,7 +94,7 @@ export function AttendeeRequestPanel({
     return (
       <Card>
         <p className="font-medium">Request declined</p>
-        <p className="text-slate-900/50 text-sm mt-1">
+        <p className="text-slate-900/50 dark:text-white/50 text-sm mt-1">
           The host wasn&apos;t able to take you on this one. Try another nearby meetup.
         </p>
       </Card>
@@ -105,13 +105,13 @@ export function AttendeeRequestPanel({
     return (
       <div className="space-y-3">
         <Card border="violet">
-          <p className="text-xs text-violet-600 mb-1">✓ You&apos;re in</p>
+          <p className="text-xs text-violet-600 dark:text-violet-400 mb-1">✓ You&apos;re in</p>
           <p className="font-medium">
             {locationRevealed
               ? "Meeting spot is unlocked above"
               : "Awaiting location reveal"}
           </p>
-          <p className="text-slate-900/60 text-sm mt-1">
+          <p className="text-slate-900/60 dark:text-white/60 text-sm mt-1">
             {locationRevealed
               ? "Head to the spot at the start time. Your host will show a QR for you to check in."
               : "Chat with the host to lock in details. They'll share the exact meeting spot when ready."}
@@ -139,9 +139,9 @@ export function AttendeeRequestPanel({
     return (
       <div className="space-y-3">
         <Card border="violet">
-          <p className="text-xs text-violet-600 mb-1">⏳ Request sent</p>
+          <p className="text-xs text-violet-600 dark:text-violet-400 mb-1">⏳ Request sent</p>
           <p className="font-medium">Awaiting host approval</p>
-          <p className="text-slate-900/60 text-sm mt-1">
+          <p className="text-slate-900/60 dark:text-white/60 text-sm mt-1">
             Once they approve, you&apos;ll be able to message them and the meeting
             spot will be revealed.
           </p>
@@ -149,7 +149,7 @@ export function AttendeeRequestPanel({
         <button
           onClick={cancelRequest}
           disabled={busy}
-          className="w-full py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900/70 text-sm hover:bg-slate-100 disabled:opacity-50"
+          className="w-full py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900/70 dark:text-white/70 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 dark:bg-slate-800 disabled:opacity-50"
         >
           Withdraw request
         </button>
@@ -163,7 +163,7 @@ export function AttendeeRequestPanel({
     return (
       <Card>
         <p className="font-medium">This meetup is full</p>
-        <p className="text-slate-900/50 text-sm mt-1">
+        <p className="text-slate-900/50 dark:text-white/50 text-sm mt-1">
           Find another nearby Echo on the home feed.
         </p>
       </Card>
@@ -178,14 +178,14 @@ export function AttendeeRequestPanel({
           onChange={(e) => setIntroMsg(e.target.value.slice(0, 280))}
           rows={3}
           placeholder="Optional — say hi, share why you're interested. The host sees this when reviewing your request."
-          className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 placeholder-slate-400 resize-none focus:outline-none focus:border-violet-400/50"
+          className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 resize-none focus:outline-none focus:border-violet-400/50"
         />
-        <p className="text-xs text-slate-900/30 text-right -mt-2">{introMsg.length}/280</p>
+        <p className="text-xs text-slate-900/30 dark:text-white/30 text-right -mt-2">{introMsg.length}/280</p>
         <div className="grid grid-cols-2 gap-2">
           <button
             onClick={() => setIntroOpen(false)}
             disabled={busy}
-            className="py-3 rounded-xl bg-slate-50 border border-slate-200 text-sm font-medium"
+            className="py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm font-medium"
           >
             Cancel
           </button>
@@ -211,7 +211,7 @@ export function AttendeeRequestPanel({
       >
         Request to join
       </button>
-      <p className="text-center text-slate-900/40 text-xs">
+      <p className="text-center text-slate-900/40 dark:text-white/40 text-xs">
         Hosts review every request. The exact meeting spot is revealed only after approval.
       </p>
       {error && <ErrorBox msg={error} />}
@@ -245,11 +245,11 @@ export function HostManagePanel({
       <section>
         <h3 className="font-semibold text-sm mb-2">
           Join requests
-          <span className="ml-2 text-slate-900/40 text-xs">{pending.length}</span>
+          <span className="ml-2 text-slate-900/40 dark:text-white/40 text-xs">{pending.length}</span>
         </h3>
         {pending.length === 0 ? (
           <Card>
-            <p className="text-sm text-slate-900/50">No pending requests yet.</p>
+            <p className="text-sm text-slate-900/50 dark:text-white/50">No pending requests yet.</p>
           </Card>
         ) : (
           <div className="space-y-2">
@@ -269,11 +269,11 @@ export function HostManagePanel({
       <section>
         <h3 className="font-semibold text-sm mb-2">
           Approved
-          <span className="ml-2 text-slate-900/40 text-xs">{approved.length}</span>
+          <span className="ml-2 text-slate-900/40 dark:text-white/40 text-xs">{approved.length}</span>
         </h3>
         {approved.length === 0 ? (
           <Card>
-            <p className="text-sm text-slate-900/50">No approved attendees yet.</p>
+            <p className="text-sm text-slate-900/50 dark:text-white/50">No approved attendees yet.</p>
           </Card>
         ) : (
           <div className="space-y-2">
@@ -341,19 +341,19 @@ function PendingRequestCard({
             {u.full_name || u.display_name}
           </p>
           {studyOrJob && (
-            <p className="text-xs text-slate-900/50 truncate">{studyOrJob}</p>
+            <p className="text-xs text-slate-900/50 dark:text-white/50 truncate">{studyOrJob}</p>
           )}
-          <p className="text-[11px] text-violet-600/80">
+          <p className="text-[11px] text-violet-600 dark:text-violet-400/80">
             ⭐ {u.reputation_score?.toFixed(1) ?? "5.0"} · tap for full profile
           </p>
         </div>
-        <span className="text-slate-900/30">→</span>
+        <span className="text-slate-900/30 dark:text-white/30">→</span>
       </Link>
 
       {attendee.requested_message && (
-        <div className="mt-3 p-3 bg-black/30 rounded-xl border border-slate-100">
-          <p className="text-[11px] text-slate-900/40 mb-1">Their note</p>
-          <p className="text-sm text-slate-900/80 italic whitespace-pre-wrap">
+        <div className="mt-3 p-3 bg-black/30 rounded-xl border border-slate-100 dark:border-slate-900">
+          <p className="text-[11px] text-slate-900/40 dark:text-white/40 mb-1">Their note</p>
+          <p className="text-sm text-slate-900/80 dark:text-white/80 italic whitespace-pre-wrap">
             “{attendee.requested_message}”
           </p>
         </div>
@@ -363,7 +363,7 @@ function PendingRequestCard({
         <button
           onClick={() => update("rejected")}
           disabled={busy !== null}
-          className="py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm font-medium hover:bg-slate-100 disabled:opacity-50"
+          className="py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800 dark:bg-slate-800 disabled:opacity-50"
         >
           {busy === "reject" ? "…" : "Decline"}
         </button>
@@ -437,7 +437,7 @@ function ApprovedAttendeeCard({
           <p className="font-semibold truncate">
             {attendee.user.full_name || attendee.user.display_name}
           </p>
-          <p className="text-[11px] text-violet-600/80">
+          <p className="text-[11px] text-violet-600 dark:text-violet-400/80">
             {revealed ? "📍 Location revealed" : "Awaiting location reveal"}
           </p>
         </div>
@@ -447,12 +447,12 @@ function ApprovedAttendeeCard({
         <button
           onClick={messageThem}
           disabled={busy}
-          className="py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm font-medium hover:bg-slate-100 disabled:opacity-50"
+          className="py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800 dark:bg-slate-800 disabled:opacity-50"
         >
           {busy ? "…" : "Message"}
         </button>
         {revealed ? (
-          <span className="py-2.5 rounded-xl bg-violet-500/10 border border-violet-500/20 text-sm font-medium text-violet-600 text-center">
+          <span className="py-2.5 rounded-xl bg-violet-500/10 border border-violet-500/20 text-sm font-medium text-violet-600 dark:text-violet-400 text-center">
             ✓ Revealed
           </span>
         ) : (
@@ -530,19 +530,19 @@ export function HostQrPanel({ activityId }: { activityId: string }) {
   return (
     <Card>
       <p className="text-sm font-medium mb-1">Check-in QR</p>
-      <p className="text-slate-900/50 text-xs mb-4">
+      <p className="text-slate-900/50 dark:text-white/50 text-xs mb-4">
         Show this when approved attendees arrive — they scan to check in.
       </p>
 
       {qrImg ? (
         <div className="flex flex-col items-center gap-3">
-          <div className="bg-white rounded-2xl p-4 border border-slate-200">
+          <div className="bg-white dark:bg-black rounded-2xl p-4 border border-slate-200 dark:border-slate-800">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={qrImg} alt="Activity QR" className="w-60 h-60" />
           </div>
           <button
             onClick={() => setToken(null)}
-            className="text-xs text-violet-600 hover:text-violet-700"
+            className="text-xs text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-200 dark:text-violet-300"
           >
             Rotate QR code
           </button>
@@ -567,7 +567,7 @@ function CheckInScanner({ activityId: _activityId }: { activityId: string }) {
   return (
     <Card>
       <p className="text-sm font-medium">Ready to check in</p>
-      <p className="text-slate-900/50 text-xs mt-1">
+      <p className="text-slate-900/50 dark:text-white/50 text-xs mt-1">
         When you arrive, ask the host to show their QR. Scan it with your phone&apos;s
         camera and you&apos;ll be checked in automatically.
       </p>
@@ -589,13 +589,13 @@ function Card({
   const cls =
     border === "violet"
       ? "bg-gradient-to-br from-violet-500/15 to-indigo-500/10 border-violet-400/30"
-      : "bg-slate-50 border-slate-200";
+      : "bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800";
   return <div className={`${cls} border rounded-2xl p-4`}>{children}</div>;
 }
 
 function ErrorBox({ msg }: { msg: string }) {
   return (
-    <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg p-3">
+    <p className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-lg p-3">
       {msg}
     </p>
   );

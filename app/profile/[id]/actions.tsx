@@ -46,7 +46,7 @@ export function ProfileActions({ profileId, isMe }: { profileId: string; isMe: b
       </button>
       <Link
         href="/activities"
-        className="py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-sm font-medium text-center hover:bg-slate-200"
+        className="py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-800 text-sm font-medium text-center hover:bg-slate-200 dark:hover:bg-slate-700 dark:bg-slate-700"
       >
         Activities
       </Link>

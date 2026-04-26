@@ -60,9 +60,9 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
   const upcomingEvents = (upcomingEventsRaw ?? []) as MeetupRow[];
 
   return (
-    <main className="min-h-screen bg-white text-slate-900 pb-24">
-      <header className="px-5 py-4 flex items-center justify-between border-b border-slate-100">
-        <Link href="/home" className="text-slate-900/60 text-sm">← Back</Link>
+    <main className="min-h-screen bg-white dark:bg-black dark:bg-black text-slate-900 dark:text-white pb-24">
+      <header className="px-5 py-4 flex items-center justify-between border-b border-slate-100 dark:border-slate-900">
+        <Link href="/home" className="text-slate-900/60 dark:text-white/60 text-sm">← Back</Link>
         <h1 className="font-semibold text-center truncate px-2">{profile.display_name}</h1>
         {isMe ? <ProfileDrawer /> : <div className="w-10" />}
       </header>
@@ -82,18 +82,18 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
           <div className="flex items-center gap-2">
             <h2 className="font-semibold text-lg">
               {profile.full_name || profile.display_name}
-              {profile.age ? <span className="text-slate-900/50 font-normal">, {profile.age}</span> : null}
+              {profile.age ? <span className="text-slate-900/50 dark:text-white/50 font-normal">, {profile.age}</span> : null}
             </h2>
             {profile.verified_id && (
-              <span className="text-xs bg-violet-500/20 text-violet-700 px-2 py-0.5 rounded-full">
+              <span className="text-xs bg-violet-500/20 text-violet-700 dark:text-violet-300 px-2 py-0.5 rounded-full">
                 Verified
               </span>
             )}
           </div>
-          {profile.bio && <p className="text-slate-900/70 text-sm mt-1 whitespace-pre-wrap">{profile.bio}</p>}
+          {profile.bio && <p className="text-slate-900/70 dark:text-white/70 text-sm mt-1 whitespace-pre-wrap">{profile.bio}</p>}
 
           {/* Education / occupation */}
-          <div className="mt-3 space-y-1 text-sm text-slate-900/70">
+          <div className="mt-3 space-y-1 text-sm text-slate-900/70 dark:text-white/70">
             {profile.ai_profile?.education && (
               <p>🎓 {profile.ai_profile.education as string}</p>
             )}
@@ -111,7 +111,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
             return (
               <div className="flex flex-wrap gap-1.5 mt-3">
                 {tags.slice(0, 5).map((t) => (
-                  <span key={t} className="text-xs px-2 py-1 bg-slate-50 border border-slate-200 rounded-full text-slate-900/70 capitalize">
+                  <span key={t} className="text-xs px-2 py-1 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-slate-900/70 dark:text-white/70 capitalize">
                     {t.replace(/_/g, " ")}
                   </span>
                 ))}
@@ -129,12 +129,12 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
       </div>
 
       {/* ─── Meetups: Upcoming + Past, side-by-side ────────────── */}
-      <div className="max-w-md mx-auto mt-6 border-t border-slate-200">
+      <div className="max-w-md mx-auto mt-6 border-t border-slate-200 dark:border-slate-800">
         <MeetupsRow upcoming={upcomingEvents} past={pastEvents} isOwner={isMe} />
       </div>
 
       {/* ─── Echoes (separate section below the meetups row) ───── */}
-      <div className="max-w-md mx-auto border-t border-slate-200">
+      <div className="max-w-md mx-auto border-t border-slate-200 dark:border-slate-800">
         <EchoesSection posts={(posts ?? []) as EchoTile[]} isOwner={isMe} />
       </div>
 
@@ -148,7 +148,7 @@ function Stat({ value, label }: { value: string | number; label: string }) {
   return (
     <div>
       <div className="text-lg font-semibold">{value}</div>
-      <div className="text-slate-900/50 text-xs">{label}</div>
+      <div className="text-slate-900/50 dark:text-white/50 text-xs">{label}</div>
     </div>
   );
 }

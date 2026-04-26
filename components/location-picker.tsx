@@ -10,6 +10,7 @@
  */
 
 import { useEffect, useRef, useState } from "react";
+import { useTheme } from "next-themes";
 import L from "leaflet";
 import { MapContainer, TileLayer, Marker, useMap, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -140,6 +141,9 @@ export default function LocationPicker({
   defaultCenter,
   onAddressFound,
 }: LocationPickerProps) {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
+
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<NominatimHit[] | null>(null);
   const [searching, setSearching] = useState(false);
@@ -200,9 +204,9 @@ export default function LocationPicker({
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search for a place (e.g. UTS Building 6)"
-          className="w-full pl-10 pr-3 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-violet-400/50"
+          className="w-full pl-10 pr-3 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-violet-400/50"
         />
-        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-900/40">🔍</span>
+        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-900/40 dark:text-white/40">🔍</span>
         <button
           type="submit"
           disabled={searching}
@@ -214,13 +218,13 @@ export default function LocationPicker({
 
       {/* Search results dropdown */}
       {searchResults && searchResults.length > 0 && (
-        <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+        <div className="bg-white dark:bg-black border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
           {searchResults.map((hit, i) => (
             <button
               key={`${hit.lat}-${hit.lon}-${i}`}
               type="button"
               onClick={() => pickResult(hit)}
-              className="w-full text-left px-3 py-2 text-sm text-slate-900/80 hover:bg-slate-100 border-b border-slate-100 last:border-b-0"
+              className="w-full text-left px-3 py-2 text-sm text-slate-900/80 dark:text-white/80 hover:bg-slate-100 dark:hover:bg-slate-800 dark:bg-slate-800 border-b border-slate-100 dark:border-slate-900 last:border-b-0"
             >
               <span className="block truncate">{hit.display_name}</span>
             </button>
@@ -228,13 +232,13 @@ export default function LocationPicker({
         </div>
       )}
       {searchResults && searchResults.length === 0 && (
-        <p className="text-xs text-slate-900/40 text-center py-2">
+        <p className="text-xs text-slate-900/40 dark:text-white/40 text-center py-2">
           No matches. Try a more specific query, or just tap on the map.
         </p>
       )}
 
       {/* The map */}
-      <div className="relative rounded-2xl overflow-hidden border border-slate-200">
+      <div className="relative rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800">
         <MapContainer
           center={[center.lat, center.lng]}
           zoom={15}
@@ -242,8 +246,15 @@ export default function LocationPicker({
           attributionControl={false}
         >
           <TileLayer
-            // CartoDB dark tiles — free, OpenStreetMap-based, look like the screenshot
-            url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+            // CartoDB tiles — light_all for light theme, dark_all for dark theme.
+            // The `key` prop forces a fresh TileLayer mount when the theme flips
+            // (otherwise Leaflet keeps the original URL cached).
+            key={isDark ? "dark" : "light"}
+            url={
+              isDark
+                ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+            }
             attribution='&copy; <a href="https://openstreetmap.org">OSM</a> &copy; <a href="https://carto.com">CARTO</a>'
             subdomains={["a", "b", "c", "d"]}
             maxZoom={20}
@@ -254,7 +265,7 @@ export default function LocationPicker({
         </MapContainer>
 
         {!value && (
-          <div className="absolute inset-x-3 bottom-3 bg-black/70 backdrop-blur rounded-xl px-3 py-2 text-center text-xs text-slate-900/80 pointer-events-none">
+          <div className="absolute inset-x-3 bottom-3 bg-black/70 backdrop-blur rounded-xl px-3 py-2 text-center text-xs text-slate-900/80 dark:text-white/80 pointer-events-none">
             Tap anywhere on the map to pin the meetup spot
           </div>
         )}
@@ -262,7 +273,7 @@ export default function LocationPicker({
 
       {/* Coords readout */}
       {value && (
-        <p className="text-xs text-slate-900/40 text-center">
+        <p className="text-xs text-slate-900/40 dark:text-white/40 text-center">
           📍 Pinned at {value.lat.toFixed(5)}, {value.lng.toFixed(5)} · drag the marker to fine-tune
         </p>
       )}

@@ -50,15 +50,15 @@ export function SignUpForm({
     <div className={cn("w-full", className)} {...props}>
       <div className="mb-6 text-center">
         <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-400 to-indigo-500 mb-4">
-          <span className="text-slate-900 font-bold text-lg">h</span>
+          <span className="text-slate-900 dark:text-white font-bold text-lg">h</span>
         </div>
-        <h1 className="text-2xl font-semibold text-slate-900">Start your journey</h1>
-        <p className="text-slate-900/50 text-sm mt-1">Lyanna can&apos;t wait to meet you</p>
+        <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">Start your journey</h1>
+        <p className="text-slate-900/50 dark:text-white/50 text-sm mt-1">Lyanna can&apos;t wait to meet you</p>
       </div>
 
       <form onSubmit={handleSignUp} className="space-y-4">
         <div>
-          <label htmlFor="email" className="block text-sm text-slate-900/70 mb-1.5">
+          <label htmlFor="email" className="block text-sm text-slate-900/70 dark:text-white/70 mb-1.5">
             Email
           </label>
           <input
@@ -68,12 +68,12 @@ export function SignUpForm({
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-violet-400/50 focus:bg-slate-50 transition-colors"
+            className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-violet-400/50 focus:bg-slate-50 dark:bg-slate-900 transition-colors"
           />
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm text-slate-900/70 mb-1.5">
+          <label htmlFor="password" className="block text-sm text-slate-900/70 dark:text-white/70 mb-1.5">
             Password
           </label>
           <input
@@ -84,12 +84,12 @@ export function SignUpForm({
             minLength={8}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-violet-400/50 focus:bg-slate-50 transition-colors"
+            className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-violet-400/50 focus:bg-slate-50 dark:bg-slate-900 transition-colors"
           />
         </div>
 
         <div>
-          <label htmlFor="repeat-password" className="block text-sm text-slate-900/70 mb-1.5">
+          <label htmlFor="repeat-password" className="block text-sm text-slate-900/70 dark:text-white/70 mb-1.5">
             Confirm password
           </label>
           <input
@@ -99,12 +99,12 @@ export function SignUpForm({
             minLength={8}
             value={repeatPassword}
             onChange={(e) => setRepeatPassword(e.target.value)}
-            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-violet-400/50 focus:bg-slate-50 transition-colors"
+            className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-violet-400/50 focus:bg-slate-50 dark:bg-slate-900 transition-colors"
           />
         </div>
 
         {error && (
-          <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg p-3">
+          <div className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-lg p-3">
             {error}
           </div>
         )}
@@ -118,9 +118,9 @@ export function SignUpForm({
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-slate-900/50">
+      <p className="mt-6 text-center text-sm text-slate-900/50 dark:text-white/50">
         Already a member?{" "}
-        <Link href="/auth/login" className="text-violet-600 hover:text-violet-700 font-medium">
+        <Link href="/auth/login" className="text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-200 dark:text-violet-300 font-medium">
           Sign in
         </Link>
       </p>
