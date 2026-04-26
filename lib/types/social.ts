@@ -124,14 +124,16 @@ export interface MessageRow {
 }
 
 export const ACTIVITY_CATEGORIES = [
-  { value: "coffee", label: "Coffee", icon: "☕" },
-  { value: "walk", label: "Walk", icon: "🚶" },
-  { value: "study", label: "Study", icon: "📚" },
-  { value: "sport", label: "Sport", icon: "⚽" },
-  { value: "food", label: "Food", icon: "🍜" },
-  { value: "art", label: "Art", icon: "🎨" },
-  { value: "music", label: "Music", icon: "🎵" },
-  { value: "movie", label: "Movie", icon: "🎬" },
-  { value: "gaming", label: "Gaming", icon: "🎮" },
-  { value: "other", label: "Other", icon: "✨" },
+  { value: "coffee",    label: "Coffee",    icon: "☕" },
+  { value: "chill",     label: "Chill",     icon: "🍵" },
+  { value: "walk",      label: "Walk",      icon: "🚶" },
+  { value: "study",     label: "Study",     icon: "📚" },
+  { value: "sport",     label: "Sport",     icon: "⚽" },
+  { value: "food",      label: "Food",      icon: "🍜" },
+  { value: "art",       label: "Art",       icon: "🎨" },
+  { value: "music",     label: "Music",     icon: "🎵" },
+  { value: "movie",     label: "Movie",     icon: "🎬" },
+  { value: "gaming",    label: "Gaming",    icon: "🎮" },
+  { value: "nightlife", label: "Nightlife", icon: "🪩" },
+  { value: "other",     label: "Other",     icon: "✨" },
 ] as const;
