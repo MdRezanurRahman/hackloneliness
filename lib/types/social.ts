@@ -52,8 +52,19 @@ export interface ActivityWithHost extends ActivityRow {
   };
 }
 
+export type AttendeeStatus =
+  | "none"        // not in the table at all (RPC synthesizes this)
+  | "pending"
+  | "approved"
+  | "rejected"
+  | "confirmed"
+  | "cancelled"
+  | "no_show";
+
 /** Row shape returned by the `nearby_activities` RPC. Flat columns — the RPC
- *  denormalizes host fields so we get activity + host + distance in one call. */
+ *  denormalizes host fields so we get activity + host + distance in one call.
+ *  Location-revealing fields (address_label, latitude, longitude) come back
+ *  as null unless you're the host or an approved attendee with revealed loc. */
 export interface NearbyActivityRow {
   id: string;
   title: string;
@@ -74,6 +85,27 @@ export interface NearbyActivityRow {
   host_avatar_url: string | null;
   host_reputation_score: number;
   distance_m: number;
+  my_attendee_status: AttendeeStatus;
+  location_revealed: boolean;
+}
+
+export interface AttendeeRow {
+  user_id: string;
+  status: Exclude<AttendeeStatus, "none">;
+  joined_at: string;
+  location_revealed_at: string | null;
+  requested_message: string | null;
+}
+
+export interface AttendeeWithUser extends AttendeeRow {
+  user: {
+    id: string;
+    display_name: string;
+    full_name: string | null;
+    avatar_url: string | null;
+    reputation_score: number;
+    ai_profile?: Record<string, unknown> | null;
+  };
 }
 
 export interface VerificationLogRow {
